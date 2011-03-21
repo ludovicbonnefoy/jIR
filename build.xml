@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<project name="Entity-Ranking" default="build" basedir="." >
+
+	<!-- Give user a chance to override without editing this file
+		(and without typing -D each time it compiles it). -->
+	<property file="build.properties" />
+
+	<!-- Compiler properties. -->
+	<property name="debug"			value="true" />
+	<property name="deprecation"	value="true" />
+	<property name="optimize"		value="true" />
+
+	<!-- Directory names. All directories MUST be subdirs of the current dir. -->
+	<property name="sources"	value="${basedir}/src" />
+	<property name="dist"		value="${basedir}/dist" />
+	<property name="classes"	value="${basedir}/classes" />
+	<property name="lib"		value="${basedir}/lib" />
+
+	<!-- Project class path. -->
+	<path id="project.classpath" >
+		<!-- the classpath includes all 3rd party libraries in ${lib.dir}. -->
+		<fileset dir="${lib}" >
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- This target allows ant to use Eclipse compiler when running inside Eclipse. -->
+	<target name="init.eclipse" if="eclipse.running" >
+		<property name="build.compiler"
+				value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+	</target>
+	
+	<!-- Initialisation target. -->
+	<target name="init" depends="init.eclipse" >
+		<tstamp/>
+	</target>
+
+	<!-- Create directories -->
+	<target name="build.init" depends="init" >
+		<mkdir dir="${classes}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/lib" />
+	</target>
+
+	<!-- Compile all java source files from ${sources} to ${classes}, -->
+	<!-- then copy all non-java files from ${sources} to ${classes}. -->
+	<target name="build" depends="build.init" description="Compiles the source" >
+
+		<javac destdir="${classes}" debug="${debug}" deprecation="${deprecation}"
+				optimize="${optimize}" source="1.6" target="1.6" >
+			<classpath refid="project.classpath" />
+			<src path="${sources}" />
+		</javac>
+
+		<copy todir="${classes}" >
+			<fileset dir="${sources}" excludes="**/*.java"/>
+		</copy>
+	</target>
+
+	<!-- Create the distribution files -->
+	<target name="dist" depends="build" >
+		<!-- remove previous jars -->
+		<delete>
+			<fileset dir="${dist}/lib" includes="**"/>
+			<file file="${dist}/entity-ranking.sh" />
+		</delete>
+		
+		<!-- copy library jars -->
+		<copy todir="${dist}/lib" >
+			<fileset dir="${lib}">
+				<include name="**/*.jar" />
+				<include name="**/*.ser.gz" />
+			</fileset>
+		</copy>
+		
+		<!-- create jar -->
+		<jar jarfile="${dist}/lib/entity-ranking.jar">
+			<fileset dir="${classes}">
+				<include name="**" />
+			</fileset>
+		</jar>
+		
+		<!-- create launcher script -->
+		<pathconvert property="launcher.classpath" targetos="unix">
+			<path>
+				<fileset dir="${dist}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</path>
+			<map from="${dist}" to="$$BASEDIR" />
+		</pathconvert>
+		<copy file="tools/launcher-template.sh" tofile="${dist}/entity-ranking.sh">
+		    <filterset>
+		      <filter token="CLASSPATH" value="${launcher.classpath}:$$BASEDIR" />
+	         <!-- <filter token="MAINCLASS" value="entityranking.Main" /> -->
+              <filter token="MAINCLASS" value="eval.type.Eval" /> 
+              <!--<filter token="MAINCLASS" value="eval.type.BuildReferenceModels" /> -->
+		    </filterset>
+		</copy>
+		<chmod perm="755" file="${dist}/entity-ranking.sh"/>
+	</target>
+
+	<!-- Clean build directory (timestamps, classes, jars, generated sources) -->
+	<target name="clean" description="Clean up">
+		<delete dir="${classes}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
+
