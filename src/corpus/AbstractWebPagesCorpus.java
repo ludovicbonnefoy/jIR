@@ -12,6 +12,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Classe abstraite implémentant la quasi-totalité des méthodes de l'interface correspondante.
+ * La seule méthode non implémentée est la seule qui est particulière à la manière de récupérer
+ * les pages web correspondantes aux urls pour chaque corpus différent, à savoir la fonction add.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface, Serializable
 {
 	private static final long serialVersionUID = 7571330063113173296L;

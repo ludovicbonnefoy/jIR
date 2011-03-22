@@ -12,6 +12,11 @@ import util.GetProperties;
 import web.page.downloader.AbstractExternalWebPageDownloader;
 import web.page.downloader.ExternalWebPageDownloaderFactory;
 
+/**
+ * Corpus pour lequel les pages web correspondantes aux urls recherchées sont collectées sur le web via un outil système dédié.
+ * Les pages web récupérées sont mises en pages selon la "norme" des campagnes d'évaluation TREC.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class WebPagesCorpusTrecForm extends AbstractWebPagesCorpus 
 {
 	private static final long serialVersionUID = -4608179288088729718L;

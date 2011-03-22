@@ -8,6 +8,10 @@ import util.GetProperties;
 import web.page.downloader.AbstractExternalWebPageDownloader;
 import web.page.downloader.ExternalWebPageDownloaderFactory;
 
+/**
+ * Corpus pour lequel les pages web correspondantes aux urls recherchées sont collectées sur le web via un outil système dédié.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class WebPagesCorpus extends AbstractWebPagesCorpus 
 {
 	private static final long serialVersionUID = -6387970913933569000L;

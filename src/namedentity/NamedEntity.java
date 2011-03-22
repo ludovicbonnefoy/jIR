@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -25,21 +24,23 @@ import web.searchenginequery.WebSearchEngineQueryFactory;
 import word.tokeniser.AbstractExternalTokeniser;
 import word.tokeniser.ExternalTokeniserFactory;
 
-
 /**
- * Forme la plus simple d'une entité nommée, contient uniquement le texte de l'EN.
+ * Forme la plus simple d'une entité nommée, contient uniquement son nom et sa forme canonique.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
 public class NamedEntity implements Serializable
 {
 	private static final long serialVersionUID = -7492535373780960285L;
 	
+	/** Texte de l'entité nommée */
 	protected String _namedEntity;
+	
+	/** Forme canonique de l'entité nommée */
 	protected String _canonicalForm;
 
 	/**
-	 * Initialise l'EN en mettant la string dans la première case du tableau.
-	 * @param namedEntity
+	 * Construction d'une entité nommée avec un texte.
+	 * @param namedEntity Texte de l'entité.
 	 */
 	public NamedEntity(String namedEntity)
 	{
@@ -47,37 +48,43 @@ public class NamedEntity implements Serializable
 		_canonicalForm = null;
 	}
 	
+	/**
+	 * Retourne le texte de l'entité nommée (nom par abus).
+	 * @return Texte de l'entité nommée.
+	 */
 	public String getName()
 	{
 		return _namedEntity;
 	}
 	
+	/**
+	 * Permet de changer le texte de l'entité nommée.
+	 * @param name Nouveau texte de l'entité nommée.
+	 */
 	public void setName(String name)
 	{
-		_canonicalForm = null;
 		_namedEntity = name;
+		_canonicalForm = null; //mis à nul car le texte de l'en a changé
 	}
 	
 	/**
-	 * Essaye de récupérer la forme canonique d'une EN.
-	 * Récupère l'EN contenant l'EN passée en référence qui à la plus forte occurence dans les dix premiers snippets récupéré en interrogeant Boss avec l'EN et le contexte.
-	 * Ex : <br/>
+	 * Récupère la forme canonique d'une entité nommées.
+	 * Principe : Récupère la forme contenant le texte actuel de l'entité nommée passée en référence qui à la plus forte 
+	 * occurence dans les dix premiers snippets récupéré en interrogeant un moteur de recherche sur le web avec pour requête l'entité nommée et un contexte.
+	 * <br/> Ex : <br/>
 	 * EN : massa <br/>
 	 * on interroge le web avec "massa teammates michael schumacher" et on se rend compte que l'EN contenant "massa" et la plus fréquente dans les dix premiers snippets est "felipe massa". 
-	 * @param namedEntity EN
-	 * @param typeNamedEntity Type large de l'EN attendu
-	 * @param contextRequest Supplément à la requête pour donner le contexte de l'EN à trouver.
-	 * @return Retourne l'EN avec son écriture modifiée.
+	 * @param context Supplément à la requête pour être sur de récupérer des snippets traitant de l'entité nommée (et pas d'une homonyme).
 	 */
-	public String getCanonicalForm(String typeNamedEntity, String contextRequest)
+	public String getCanonicalForm(String context)
 	{
-		if(_canonicalForm != null)
-			return _canonicalForm;
+		if(_canonicalForm != null) //Si la forme canonique a déjà été trouvée
+			return _canonicalForm; //on la retourne
 		
 		try
 		{
 			AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
-	        qse.query(_namedEntity+" "+contextRequest,10);
+	        qse.query(_namedEntity+" "+context,10);
 	        
 	        String text = new String(); //contient le texte des snippets
 	        
@@ -127,10 +134,8 @@ public class NamedEntity implements Serializable
 	}
 	
 	/**
-	 * Essaye de corriger l'EN d'erreurs dans l'écriture.
+	 * Vérifie et corrige le texte de l'entité nommée d'erreurs dans l'écriture.
 	 * Interroge Boss et corrige si il y a une suggestion.
-	 * @param namedEntity
-	 * @return
 	 */
 	public void correctSpelling()
 	{

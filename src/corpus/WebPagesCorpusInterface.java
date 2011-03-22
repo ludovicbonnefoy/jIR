@@ -2,7 +2,6 @@ package corpus;
 
 import java.util.Set;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * Les classes implémentant cette inferface ont pour but de collecter des pages web à partir d'une liste d'urls et de les rassembler dans un même dossier.
