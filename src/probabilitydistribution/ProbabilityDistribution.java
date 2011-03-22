@@ -21,6 +21,8 @@ public class ProbabilityDistribution implements java.io.Serializable
 
 	/** Nombre d'éléments total dans la collection */
 	protected Long _total;
+	
+	/** Liste des éléments présents dans le corpus associé à son nombre d'occurences. */
 	protected HashMap<String, Long> _freqs; 
 
 	/**

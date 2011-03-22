@@ -3,7 +3,6 @@ package corpus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Set;
 
 import util.GetProperties;
 import web.page.downloader.AbstractExternalWebPageDownloader;
@@ -11,23 +10,34 @@ import web.page.downloader.ExternalWebPageDownloaderFactory;
 
 public class WebPagesCorpus extends AbstractWebPagesCorpus 
 {
-	public WebPagesCorpus()
+	private static final long serialVersionUID = -6387970913933569000L;
+
+	public WebPagesCorpus(File directory) throws FileNotFoundException
 	{
-		super();
+		super(directory);
 	}
-	
-	public WebPagesCorpus(File directory, Set<String> urls) throws FileNotFoundException, IOException, InterruptedException
+
+	public WebPagesCorpus(String corpusPath)
 	{
-		super(directory, urls);
+		super(corpusPath);
 	}
-	
-	public void add(String url) throws IOException, InterruptedException 
+
+	public boolean add(String url) 
 	{
-		AbstractExternalWebPageDownloader webPagesDownloader = ExternalWebPageDownloaderFactory.get(GetProperties.getInstance().getProperty("externalWebPagesDownloaderPath"));
-    	webPagesDownloader.download(_directory+"/"+_fileNumber,url);
-    	
-    	_webPages.put(url, new File(_directory+"/"+_fileNumber));
-    	_fileNumber++;
+		try
+		{
+			AbstractExternalWebPageDownloader webPagesDownloader = ExternalWebPageDownloaderFactory.get(GetProperties.getInstance().getProperty("externalWebPagesDownloaderPath"));
+			webPagesDownloader.download(_directory+"/"+_fileNumber,url);
+
+			_webPages.put(url, new File(_directory+"/"+_fileNumber));
+			_fileNumber++;
+		} catch (InterruptedException e) {
+			return false;
+		} catch (IOException e) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

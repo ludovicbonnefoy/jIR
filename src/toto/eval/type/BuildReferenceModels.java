@@ -97,8 +97,8 @@ public class BuildReferenceModels
 				for (int i = 0; i < uris.getLength(); i++)
 					urls.add(uris.item(i).getTextContent());
 				
-				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get();
-				webCorpus.build(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), new HashSet<String>(urls)); //aspiration des pages
+				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"));
+				webCorpus.build(new HashSet<String>(urls)); //aspiration des pages
 				
 				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
 				ngrams.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
@@ -160,8 +160,8 @@ public class BuildReferenceModels
 				qse.queryBoss(type, nbrDocs); //Interrogation de Boss
 				System.out.println(type);
 			
-				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get();
-				webCorpus.build(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), new HashSet<String>(qse.getURLs())); //aspiration des pages
+				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"));
+				webCorpus.build(new HashSet<String>(qse.getURLs())); //aspiration des pages
 				
 				
 				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();

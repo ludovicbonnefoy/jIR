@@ -1,1 +1,15 @@
 corpus
+namedentity
+probabilitydistribution
+probabilitydistribution.similarity
+searchengine.indri
+todo
+toto.eval.type
+util
+web.page.classification
+web.page.downloader
+web.searchenginequery
+web.util.html
+weka
+word
+word.tokeniser

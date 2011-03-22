@@ -7,102 +7,134 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface
+public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface, Serializable
 {
+	private static final long serialVersionUID = 7571330063113173296L;
+
+	/** Association url/ document dans le corpus. */
 	protected HashMap<String, File> _webPages;
+
+	/** Dossier où est contenu le corpus. */
 	protected File _directory;
-	
-	/** Numéro à associer à la prochaine page web*/
+
+	/** Numéro à associer à la prochaine page web pour stockage dans le dossier. */
 	protected Integer _fileNumber;
 
 	/**
-	 * Construit un corpus vide
+	 * Initialisation d'un corpus vide.
+	 * @param directory Dossier où vont être stockés les pages web.
 	 */
-	AbstractWebPagesCorpus()
+	AbstractWebPagesCorpus(File directory) throws FileNotFoundException
 	{
+		if(!directory.exists())
+			throw (new FileNotFoundException("directory not found"));
+
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
+		_directory = directory;
 	}
 
 	/**
-	 * Build corpus with files
-	 * @param files Files
+	 * Récupère un corpus sérialisé.
+	 * @param corpusPath Chemin complet du corpus sérialisé.
 	 */
-	AbstractWebPagesCorpus(File directory, Set<String> urls) throws FileNotFoundException, IOException, InterruptedException
+	AbstractWebPagesCorpus(String corpusPath)
 	{
-		build(directory, urls);
+		try {
+			readObject(new ObjectInputStream(new FileInputStream(corpusPath)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	public void destroy()
 	{
 		File[] files = _directory.listFiles(); 
 		for(int i=0; i<files.length; i++) 
 			files[i].delete(); 
-		
+
 		_directory = null;
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
 	}
 
-	public void build(File directory, Set<String> urls) throws FileNotFoundException, IOException, InterruptedException
+	public Set<String> build(Set<String> urls)
 	{
 		destroy();
-		
-		if( directory.exists() )
-		{
-			_directory = directory;
-			_webPages = new HashMap<String, File>();
-			_fileNumber = 0;
 
-			add(urls);
-		}
-		else
-			throw (new FileNotFoundException("directory not found"));
+		HashSet<String> errors = new HashSet<String>();
+
+		_webPages = new HashMap<String, File>();
+		_fileNumber = 0;
+
+		errors = (HashSet<String>) add(urls);
+
+		return errors;
 	}
-	
-	public void add(Set<String> urls) throws IOException,InterruptedException
+
+	public Set<String> add(Set<String> urls)
 	{
+		HashSet<String> errors = new HashSet<String>();
+
 		for(String url : urls)
-			add(url);
+		{
+			boolean success = add(url);
+
+			if(!success)
+				errors.add(url);
+		}
+
+		return errors;
 	}
-	
-	public void delete(String url)
+
+	public boolean delete(String url)
 	{
 		if(_webPages.containsKey(url))
 		{
 			_webPages.get(url).delete();
 			_webPages.remove(url);
+			return true;
 		}
+
+		return false;
 	}
-	
-	public void delete(Set<String> urls)
+
+	public Set<String> delete(Set<String> urls)
 	{
+		HashSet<String> errors = new HashSet<String>();
+
 		for(String url : urls)
 		{
-			if(_webPages.containsKey(url))
-			{
-				_webPages.get(url).delete();
-				_webPages.remove(url);
-			}
+			boolean success = delete(url);
+
+			if(!success)
+				errors.add(url);
 		}
+
+		return errors;
 	}
-	
+
 	public File getWebPage(String url)
 	{
 		if(_webPages.containsKey(url))
 			return _webPages.get(url);
-		
+
 		return null;
 	}
-	
+
 	public Set<File> getWebPages(Set<String> urls)
 	{
 		HashSet<File> webPagesSet = new HashSet<File>();
-		
+
 		for(String url : urls)
 		{
 			if(_webPages.containsKey(url))
@@ -110,46 +142,57 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface
 			else
 				webPagesSet.add(null);
 		}
-		
+
 		return webPagesSet;
 	}
-	
+
 	public Set<String> getURLs()
 	{
 		return _webPages.keySet();
+	}
+
+	public boolean contains(String url)
+	{
+		return _webPages.containsKey(url);
 	}
 
 	public File getCorpusDirectory()
 	{
 		return _directory;
 	}
-	
-	public void Save(String path)
+
+	public Integer getFileNumber()
+	{
+		return _fileNumber;
+	}
+
+	public void serialize(String path)
 	{
 		try 
-    	{
-    		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path)); //Emplacement de l'objet sérialisé
-    		oos.writeObject(this); //enregistrement
-    		oos.flush();
-    		oos.close();
-    	}
-    	catch (java.io.IOException e) {
-    		e.getMessage();
-    	}
+		{
+			writeObject(new ObjectOutputStream(new FileOutputStream(path)));
+		}
+		catch (java.io.IOException e) {
+			e.getMessage();
+		}
 	}
-	
-	public static AbstractWebPagesCorpus Load(String path)
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException
 	{
-		try 
-    	{
-    		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
-    		
-    		return ((AbstractWebPagesCorpus)(ois.readObject()));
-    	}catch(Exception e){
-    		e.getMessage();
-    	}
-    	
-    	return null;
+		out.writeObject(this);
+		out.flush();
+		out.close();
 	}
-	
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		AbstractWebPagesCorpus tmp = (AbstractWebPagesCorpus)(in.readObject());
+
+		for(String url : tmp.getURLs())
+			_webPages.put(url, tmp.getWebPage(url));
+
+		_directory = tmp.getCorpusDirectory();
+
+		_fileNumber = tmp.getFileNumber();
+	}
 }
