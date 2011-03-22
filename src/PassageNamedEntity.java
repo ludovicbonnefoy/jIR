@@ -1,6 +1,8 @@
-package util;
+
 
 import java.util.ArrayList;
+
+import util.NamedEntity;
 
 /**
  * Définition d'une Entité Nommée adaptée à la piste EntityRanking sur le corpus ClueWeb 

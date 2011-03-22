@@ -1,4 +1,4 @@
-package util.searchengine;
+
 
 /**
  * Cette classe contient les informations importantes liées à un passage retrouvé par Indri.  

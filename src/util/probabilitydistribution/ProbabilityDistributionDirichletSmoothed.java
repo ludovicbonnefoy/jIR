@@ -1,5 +1,9 @@
 package util.probabilitydistribution;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 
 
@@ -34,6 +38,19 @@ public class ProbabilityDistributionDirichletSmoothed extends ProbabilityDistrib
 		_mu = new Double(2000);
 	}
 	
+	public ProbabilityDistributionDirichletSmoothed(String path)
+	{
+		try {
+			readObject(new ObjectInputStream(new FileInputStream(path)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Double getMu()
 	{
 		return _mu;
@@ -55,5 +72,15 @@ public class ProbabilityDistributionDirichletSmoothed extends ProbabilityDistrib
 			return DirichletSmoothing.getInstance().smooth(key, _freqs.get(key), _total, _mu);
 		else
 			return DirichletSmoothing.getInstance().smooth(key, new Long(0), _total, _mu);
+	}
+	
+	protected void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		ProbabilityDistributionDirichletSmoothed tmp = (ProbabilityDistributionDirichletSmoothed)(in.readObject());
+		
+		_freqs = tmp.getFrequenciesMap();
+		_total = tmp.getVocabularySize();
+		
+		_mu = tmp.getMu(); 
 	}
 }

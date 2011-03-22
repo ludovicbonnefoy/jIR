@@ -1,4 +1,5 @@
-package util.searchengine;
+
+
 
 import java.io.*; 
 import java.util.*;
@@ -7,7 +8,6 @@ import namedentity.AbstractNamedEntityRecognitionTool;
 import namedentity.NamedEntityRecognitionToolFactory;
 
 import util.GetProperties;
-import util.PassageNamedEntity;
 
 
 /**

@@ -28,6 +28,11 @@ public class ProbabilityDistributionLaplaceSmoothed extends ProbabilityDistribut
     	super(frequencies);
     }
     
+    public ProbabilityDistributionLaplaceSmoothed(String path)
+    {
+    	super(path);
+    }
+    
 	/**
 	 * Renvoie la valeur lissée correspondante à la clé.
 	 * @param key Clé

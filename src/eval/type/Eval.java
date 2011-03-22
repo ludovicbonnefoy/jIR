@@ -8,7 +8,6 @@ import java.util.List;
 import entityranking.QuerySearchEngine;
 
 import util.GetProperties;
-import util.NGrams;
 import util.NounTransformation;
 import util.SortKeysMapByNumberValues;
 import util.probabilitydistribution.DirichletSmoothing;
@@ -140,7 +139,7 @@ public class Eval {
 		properties.init("properties.properties");
 
 		DirichletSmoothing ds = DirichletSmoothing.getInstance(); //Création de l'outil de smoothing
-		ProbabilityDistributionLaplaceSmoothed pdlsWorld = new ProbabilityDistributionLaplaceSmoothed(NGrams.deserializedPDNGrams(properties.getProperty("unigramWorldSer")).getFrequenciesMap()); //récupération du modèle du monde, lissé avec Laplace
+		ProbabilityDistributionLaplaceSmoothed pdlsWorld = new ProbabilityDistributionLaplaceSmoothed(properties.getProperty("unigramWorldSer"));
 		ds.setReference(pdlsWorld); //donne le modèle du monde à Dirichlet
 		System.err.println("Modèle du monde chargé");
 
@@ -155,7 +154,7 @@ public class Eval {
 
 			while((type = brTokens.readLine()) != null)
 			{
-				ProbabilityDistributionDirichletSmoothed pdds = (ProbabilityDistributionDirichletSmoothed) NGrams.deserializedPDNGrams(properties.getProperty("1GramClassModelSnippets")+"/"+type);
+				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(properties.getProperty("1GramClassModelSnippets")+"/"+type);
 
 				if(pdds.getVocabularySize() > 10)
 				{
@@ -191,7 +190,7 @@ public class Eval {
 					continue;
 				}
 				
-				ProbabilityDistributionDirichletSmoothed pdds = (ProbabilityDistributionDirichletSmoothed) NGrams.deserializedPDNGrams(properties.getProperty("1GramInstancesModelSnippets")+"/"+instance);
+				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(properties.getProperty("1GramInstancesModelSnippets")+"/"+instance);
 
 				if(pdds.getVocabularySize() > 10)
 				{

@@ -19,7 +19,7 @@ import corpus.AbstractWebPagesCorpus;
 import corpus.WebPagesCorpusFactory;
 
 import util.GetProperties;
-import util.NGrams;
+import util.probabilitydistribution.NGramsProbabilityDistribution;
 import util.probabilitydistribution.ProbabilityDistributionDirichletSmoothed;
 import entityranking.QuerySearchEngine;
 
@@ -99,8 +99,11 @@ public class BuildReferenceModels
 				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get();
 				webCorpus.build(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), new HashSet<String>(urls)); //aspiration des pages
 				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(NGrams.freqNGramsWebCorpus(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1)); //probabilités d'apparition des ngrammes dans le corpus de référence lissées avec Dirichlet				
-				NGrams.serializedPDNGrams(saveDirectory+"/"+type, pdds);
+				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
+				ngrams.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
+				
+				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){
 			System.err.println(e.getMessage()); 
@@ -128,8 +131,11 @@ public class BuildReferenceModels
 				for(String snippet : qse.getSnippets())
 					snippets += snippet;
 				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(NGrams.freqNGramsString(snippets, 1)); //probabilités d'apparition des ngrammes dans le corpus de référence lissées avec Dirichlet				
-				NGrams.serializedPDNGrams(saveDirectory+"/"+type, pdds);
+				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
+				ngrams.fromString(snippets, 1);
+				
+				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){
 			System.err.println(e.getMessage()); 
@@ -156,8 +162,12 @@ public class BuildReferenceModels
 				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get();
 				webCorpus.build(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), new HashSet<String>(qse.getURLs())); //aspiration des pages
 				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(NGrams.freqNGramsWebCorpus(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1)); //probabilités d'apparition des ngrammes dans le corpus de référence lissées avec Dirichlet				
-				NGrams.serializedPDNGrams(saveDirectory+"/"+type, pdds);
+				
+				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
+				ngrams.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
+
+				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){
 			System.err.println(e.getMessage()); 
