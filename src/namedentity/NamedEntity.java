@@ -20,10 +20,10 @@ import org.xml.sax.SAXException;
 
 import util.GetProperties;
 import util.SortKeysMapByNumberValues;
-import util.tokeniser.AbstractExternalTokeniser;
-import util.tokeniser.ExternalTokeniserFactory;
-import util.web.searchenginequery.AbstractWebSearchEngineQuery;
-import util.web.searchenginequery.WebSearchEngineQueryFactory;
+import web.searchenginequery.AbstractWebSearchEngineQuery;
+import web.searchenginequery.WebSearchEngineQueryFactory;
+import word.tokeniser.AbstractExternalTokeniser;
+import word.tokeniser.ExternalTokeniserFactory;
 
 
 /**

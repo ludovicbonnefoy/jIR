@@ -10,8 +10,8 @@ import java.util.Set;
 
 import util.FileReader;
 import util.GetProperties;
-import util.web.page.downloader.AbstractExternalWebPageDownloader;
-import util.web.page.downloader.ExternalWebPageDownloaderFactory;
+import web.page.downloader.AbstractExternalWebPageDownloader;
+import web.page.downloader.ExternalWebPageDownloaderFactory;
 
 public class WebPagesCorpusTrecForm extends AbstractWebPagesCorpus 
 {
