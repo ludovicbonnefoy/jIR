@@ -1,5 +1,4 @@
-package todo;
-
+package searchengine.indri;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import util.GetProperties;
-import util.indri.PassageIndri;
-
 /**
  * API perso pour Indri. 
  * Trois fonctions sont proposées : Indexation, Récupération de documents et de passages.
@@ -44,11 +41,14 @@ public class Indri
     
     /** Le modèle utilisé pour la recherche (cosine, okapie, indri ?) */
     private String _retModel;
+    
+    /**Chemin du dossier où vont être trouvés les différents éxécutables d'Indri */
+    private String _executableDirectoryPath;
 
     /**
      * Initialisation de la classe et de certains paramètres avec des valeurs par défaut.
      */
-    public Indri()
+    public Indri(String executableDirectoryPath)
     {
         _memory="3G";
         _stemmer = "krovetz";
@@ -57,6 +57,8 @@ public class Indri
         _corpusClass = "trecweb";
         _indexPath = GetProperties.getInstance().getProperty("topicIndex")+"/";
         _retModel = "1";
+        
+        _executableDirectoryPath = executableDirectoryPath;
     }
 
     /**
@@ -147,7 +149,7 @@ public class Indri
         try
         {
             //Création du fichier de paramètres avec les valeurs des données membres
-            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter(GetProperties.getInstance().getProperty("tmpDirectory")+"/indexationIndri")));
+            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter("/tmp/indriIndexationParameters")));
             parameters.println("<parameters>");
             parameters.println("\t<index>"+_indexPath+"</index>");
             parameters.println("\t<memory>"+_memory+"</memory>");
@@ -178,17 +180,14 @@ public class Indri
             //Indexation
             System.err.println("Indexation");
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec(new String[]{GetProperties.getInstance().getProperty("indri")+"/IndriBuildIndex",GetProperties.getInstance().getProperty("tmpDirectory")+"/indexationIndri"});
+            Process process = runtime.exec(new String[]{_executableDirectoryPath+"/IndriBuildIndex","/tmp/indriIndexationParameters"});
 
             //Obligatoire pour que le système passe en revue les messages de sortie d'Indri et ne patiente pas
             BufferedReader brTokens = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            
             while(brTokens.readLine() != null);
-            
             process.waitFor();
             
             System.err.println("Indexation terminée");
-
         }catch(Exception e){
             System.err.println(e.getMessage());
         }
@@ -196,18 +195,18 @@ public class Indri
 
     /**
      * Récupération des documents les plus pertinents par rapport à une requête dans un corpus préalablement indéxé.
-     * @param req La requête
+     * @param query La requête
      * @param count Le nombre de document à retourner
      * @return Paire Nom du document dans le corpus / Score du document.
      */
-    public HashMap<String,Double> getDocuments(String req, Integer count)
+    public HashMap<String,Double> getDocuments(String query, Integer count)
     {
         HashMap<String,Double> documents = new HashMap<String,Double>();
         System.err.println("Récupération des documents");
         try
         {
             //Création du fichier de paramètres
-            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter(GetProperties.getInstance().getProperty("tmpDirectory")+"/recuperationDocuments")));
+            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter("/tmp/indriDocumentQuery")));
             parameters.println("<parameters>");
             parameters.println("\t<index>"+_indexPath+"</index>");
             parameters.println("\t<retmodel>"+_retModel+"</retmodel>");
@@ -216,14 +215,14 @@ public class Indri
             parameters.println("\t<count>"+count+"</count>");
             parameters.println("\t<query>");
             parameters.println("\t\t<number>1</number>");
-            parameters.println("\t\t<text>#combine("+req.replaceAll("[^0-9a-zA-Z]"," ")+")</text>");
+            parameters.println("\t\t<text>#combine("+query.replaceAll("[^0-9a-zA-Z]"," ")+")</text>");
             parameters.println("\t</query>");
             parameters.println("</parameters>");
             parameters.close();
 
             //Requete à Indri
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec(new String[]{GetProperties.getInstance().getProperty("indri")+"/IndriRunQuery",GetProperties.getInstance().getProperty("tmpDirectory")+"/recuperationDocuments"});
+            Process process = runtime.exec(new String[]{_executableDirectoryPath+"/IndriRunQuery","/tmp/indriDocumentQuery"});
             process.waitFor();
 
             //Lecture des résultats
@@ -245,7 +244,6 @@ public class Indri
         }catch(Exception e){
             System.err.println(e);
         }
-
         return documents;
     }
 
@@ -265,7 +263,7 @@ public class Indri
         try
         {
             //Création du fichier de paramètres
-            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter(GetProperties.getInstance().getProperty("tmpDirectory")+"/recuperationPassages")));
+            PrintWriter parameters = new PrintWriter(new BufferedWriter(new FileWriter("/tmp/indriPassageQuery")));
             parameters.println("<parameters>");
             parameters.println("\t<index>"+_indexPath+"</index>");
             parameters.println("\t<retmodel>"+_retModel+"</retmodel>");
@@ -281,7 +279,7 @@ public class Indri
 
             //Requete à Indri
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec(new String[]{GetProperties.getInstance().getProperty("indri")+"/IndriRunQuery",GetProperties.getInstance().getProperty("tmpDirectory")+"/recuperationPassages"});
+            Process process = runtime.exec(new String[]{_executableDirectoryPath+"/IndriRunQuery","/tmp/indriPassageQuery"});
             process.waitFor();
 
             //Lecture des résultats
@@ -293,12 +291,12 @@ public class Indri
                 String res[] = line.split("\t");
 
                 //Permet de récupérer l'id Indri au docno récupéré dans res
-                Process getIDProcess = runtime.exec(new String[]{GetProperties.getInstance().getProperty("indri")+"/dumpindex",_indexPath,"di","docno",res[1]});
+                Process getIDProcess = runtime.exec(new String[]{_executableDirectoryPath+"/dumpindex",_indexPath,"di","docno",res[1]});
                 getIDProcess.waitFor();
                 String id = new BufferedReader(new InputStreamReader(getIDProcess.getInputStream())).readLine();
 
                 //Récupère le passage en sélectionnant les bons tokens dans le vecteur du document
-                Process getPassageProcess = runtime.exec(new String[]{GetProperties.getInstance().getProperty("indri")+"/dumpindex",_indexPath,"dv",id});
+                Process getPassageProcess = runtime.exec(new String[]{_executableDirectoryPath+"/dumpindex",_indexPath,"dv",id});
                 BufferedReader brTokens = new BufferedReader(new InputStreamReader(getPassageProcess.getInputStream()));
                 Integer numToken = 0;
                 String passage = new String(), tokenLine;

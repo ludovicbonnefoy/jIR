@@ -1,6 +1,5 @@
 package todo;
 
-
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.File;
@@ -11,6 +10,8 @@ import java.io.PrintWriter;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
+import searchengine.indri.Indri;
+import searchengine.indri.PassageIndri;
 import util.GetProperties;
 import web.util.html.HTML2Text;
 
@@ -45,7 +46,7 @@ public class GetPassages
         try
         {
         	//Indexation des passages avec Indri
-        	Indri indri = new Indri();
+        	Indri indri = new Indri(GetProperties.getInstance().getProperty("indri"));
         	indri.setMemory("1G");
         	indri.setCorpusPath(GetProperties.getInstance().getProperty("passagesCorpus")+"/");
         	indri.setIndexPath(GetProperties.getInstance().getProperty("passagesIndex")+"/");
