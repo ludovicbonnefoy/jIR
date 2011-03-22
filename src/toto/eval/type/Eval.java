@@ -95,8 +95,8 @@ public class Eval {
 				System.err.println(compteur++ +" "+instance);
 
 				//Ecriture qrels
-				HashMap<String, Double> typesWeight = dbpInstances.get(instance).getTypesWeight1();
-				
+				dbpInstances.get(instance).computeWeights();		
+				HashMap<String, Double> typesWeight = dbpInstances.get(instance).getTypesWeight();			
 				/*Double max = 0.;
 				for(Double val : typesWeight.values())
 					max = Math.max(val, max);
@@ -225,7 +225,8 @@ public class Eval {
 				System.err.println(instance);
 
 				//Ecriture qrels
-				HashMap<String, Double> typesWeight = dbpInstances.get(instance).getTypesWeight1();
+				dbpInstances.get(instance).computeWeights();		
+				HashMap<String, Double> typesWeight = dbpInstances.get(instance).getTypesWeight();			
 				
 				Double max = 0.;
 				for(Double val : typesWeight.values())
