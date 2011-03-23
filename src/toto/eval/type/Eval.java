@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import probabilitydistribution.DirichletSmoothing;
-import probabilitydistribution.ProbabilityDistributionDirichletSmoothed;
-import probabilitydistribution.ProbabilityDistributionLaplaceSmoothed;
-import probabilitydistribution.similarity.AbstractProbabilityDistributionSimilarity;
-import probabilitydistribution.similarity.ProbabilityDistributionSimilarityFactory;
 
 import entityranking.QuerySearchEngine;
 
 import util.GetProperties;
 import util.SortKeysMapByNumberValues;
 import word.NounTransformation;
+import word.probabilitydistribution.NGramsDirichletSmoothing;
+import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
+import word.probabilitydistribution.NGramsProbabilityDistributionLaplaceSmoothed;
+import word.probabilitydistribution.similarity.AbstractProbabilityDistributionSimilarity;
+import word.probabilitydistribution.similarity.ProbabilityDistributionSimilarityFactory;
 
 import namedentity.DBPediaOwlNamedEntity;
 
@@ -142,14 +142,14 @@ public class Eval {
 		GetProperties properties = GetProperties.getInstance();
 		properties.init("properties.properties");
 
-		DirichletSmoothing ds = DirichletSmoothing.getInstance(); //Création de l'outil de smoothing
-		ProbabilityDistributionLaplaceSmoothed pdlsWorld = new ProbabilityDistributionLaplaceSmoothed(properties.getProperty("unigramWorldSer"));
+		NGramsDirichletSmoothing ds = NGramsDirichletSmoothing.getInstance(); //Création de l'outil de smoothing
+		NGramsProbabilityDistributionLaplaceSmoothed pdlsWorld = new NGramsProbabilityDistributionLaplaceSmoothed(new File(properties.getProperty("unigramWorldSer")));
 		ds.setReference(pdlsWorld); //donne le modèle du monde à Dirichlet
 		System.err.println("Modèle du monde chargé");
 
 
 		//chargement des distributions de probas pour tous les types
-		HashMap<String, ProbabilityDistributionDirichletSmoothed> pddsTypes = new HashMap<String, ProbabilityDistributionDirichletSmoothed>();
+		HashMap<String, NGramsProbabilityDistributionDirichletSmoothed> pddsTypes = new HashMap<String, NGramsProbabilityDistributionDirichletSmoothed>();
 		//HashMap<String, ProbabilityDistributionLaplaceSmoothed> pddsTypes = new HashMap<String, ProbabilityDistributionLaplaceSmoothed>();
 		try
 		{
@@ -158,7 +158,7 @@ public class Eval {
 
 			while((type = brTokens.readLine()) != null)
 			{
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(properties.getProperty("1GramClassModelSnippets")+"/"+type);
+				NGramsProbabilityDistributionDirichletSmoothed pdds = new NGramsProbabilityDistributionDirichletSmoothed(new File(properties.getProperty("1GramClassModelSnippets")+"/"+type));
 
 				if(pdds.getVocabularySize() > 10)
 				{
@@ -176,7 +176,7 @@ public class Eval {
 		System.err.println("Chargement classes terminé");
 
 
-		HashMap<String, ProbabilityDistributionDirichletSmoothed> pddsInstances = new HashMap<String, ProbabilityDistributionDirichletSmoothed>();
+		HashMap<String, NGramsProbabilityDistributionDirichletSmoothed> pddsInstances = new HashMap<String, NGramsProbabilityDistributionDirichletSmoothed>();
 		//HashMap<String, ProbabilityDistributionLaplaceSmoothed> pddsInstances = new HashMap<String, ProbabilityDistributionLaplaceSmoothed>();
 
 		HashMap<String, DBPediaOwlNamedEntity> dbpInstances = GetInstancesSet.DBPediaInstancesSetDeserialization("data/DBPediaInstances");
@@ -194,7 +194,7 @@ public class Eval {
 					continue;
 				}
 				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(properties.getProperty("1GramInstancesModelSnippets")+"/"+instance);
+				NGramsProbabilityDistributionDirichletSmoothed pdds = new NGramsProbabilityDistributionDirichletSmoothed(new File(properties.getProperty("1GramInstancesModelSnippets")+"/"+instance));
 
 				if(pdds.getVocabularySize() > 10)
 				{

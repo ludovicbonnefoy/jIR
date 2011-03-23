@@ -1,4 +1,4 @@
-package probabilitydistribution.similarity;
+package word.probabilitydistribution.similarity;
 
 import util.GetProperties;
 

@@ -1,4 +1,4 @@
-package probabilitydistribution.similarity;
+package word.probabilitydistribution.similarity;
 
 import java.util.ArrayList;
 import java.util.HashSet;

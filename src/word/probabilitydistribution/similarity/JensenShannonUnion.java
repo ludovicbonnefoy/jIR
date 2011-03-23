@@ -1,10 +1,10 @@
-package probabilitydistribution.similarity;
+package word.probabilitydistribution.similarity;
 
 /**
  * Attention : tout les éléments de first doivent être présents dans second et inversement. Si ce n'est pas le cas, penser à utiliser des distributions lissées
  * @author ludo
  */
-public class JensenShannon extends AbstractProbabilityDistributionSimilarity 
+public class JensenShannonUnion extends AbstractProbabilityDistributionSimilarity 
 {
 	public Double similarity() 
 	{

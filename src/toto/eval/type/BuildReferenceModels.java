@@ -15,13 +15,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import probabilitydistribution.NGramsProbabilityDistribution;
-import probabilitydistribution.ProbabilityDistributionDirichletSmoothed;
 
 import corpus.AbstractWebPagesCorpus;
 import corpus.WebPagesCorpusFactory;
 
 import util.GetProperties;
+import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
 import entityranking.QuerySearchEngine;
 
 public class BuildReferenceModels 
@@ -100,10 +99,9 @@ public class BuildReferenceModels
 				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"));
 				webCorpus.build(new HashSet<String>(urls)); //aspiration des pages
 				
-				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
-				ngrams.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
-				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				NGramsProbabilityDistributionDirichletSmoothed pdds = new NGramsProbabilityDistributionDirichletSmoothed();
+				pdds.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
+
 				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){
@@ -132,10 +130,8 @@ public class BuildReferenceModels
 				for(String snippet : qse.getSnippets())
 					snippets += snippet;
 				
-				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
-				ngrams.fromString(snippets, 1);
-				
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				NGramsProbabilityDistributionDirichletSmoothed pdds = new NGramsProbabilityDistributionDirichletSmoothed();
+				pdds.fromString(snippets, 1);
 				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){
@@ -164,10 +160,8 @@ public class BuildReferenceModels
 				webCorpus.build(new HashSet<String>(qse.getURLs())); //aspiration des pages
 				
 				
-				NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution();
-				ngrams.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
-
-				ProbabilityDistributionDirichletSmoothed pdds = new ProbabilityDistributionDirichletSmoothed(ngrams.getFrequenciesMap());
+				NGramsProbabilityDistributionDirichletSmoothed pdds = new NGramsProbabilityDistributionDirichletSmoothed();
+				pdds.fromFile(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"), 1);
 				pdds.serialize(saveDirectory+"/"+type);
             }
 		}catch(Exception e){

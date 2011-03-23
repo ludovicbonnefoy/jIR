@@ -1,4 +1,4 @@
-package probabilitydistribution.similarity;
+package word.probabilitydistribution.similarity;
 
 /**
  * Attention : calcul d'une divergence et non d'une similarité
