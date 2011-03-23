@@ -1,4 +1,4 @@
-package toto.eval.type;
+package todo.eval.type;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,13 +15,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-
 import corpus.AbstractWebPagesCorpus;
 import corpus.WebPagesCorpusFactory;
 
 import util.GetProperties;
+import web.searchenginequery.AbstractWebSearchEngineQuery;
+import web.searchenginequery.WebSearchEngineQueryFactory;
 import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
-import entityranking.QuerySearchEngine;
 
 public class BuildReferenceModels 
 {
@@ -123,8 +123,9 @@ public class BuildReferenceModels
 			while((type = brTokens.readLine()) != null) //lecture de la sortie du TreeTagger élément par élément
             {
 				System.out.println(type);
-				QuerySearchEngine qse = new QuerySearchEngine();
-				qse.queryBoss(type, nbrDocs); //Interrogation de Boss
+
+				AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
+				qse.query(type, nbrDocs); //Interrogation de Boss
 			
 				String snippets = new String();
 				for(String snippet : qse.getSnippets())
@@ -152,8 +153,8 @@ public class BuildReferenceModels
 			
 			while((type = brTokens.readLine()) != null) //lecture de la sortie du TreeTagger élément par élément
             {
-				QuerySearchEngine qse = new QuerySearchEngine();
-				qse.queryBoss(type, nbrDocs); //Interrogation de Boss
+				AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
+				qse.query(type, nbrDocs); //Interrogation de Boss
 				System.out.println(type);
 			
 				AbstractWebPagesCorpus webCorpus = WebPagesCorpusFactory.get(new File(properties.getProperty("tmpDirectory")+"/tmpCorpus/"));

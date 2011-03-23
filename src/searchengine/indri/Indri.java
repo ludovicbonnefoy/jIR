@@ -20,7 +20,6 @@ import util.GetProperties;
  */
 public class Indri
 {
-	
 	/** La mémoire maximum qu'Indri va pouvoir utiliser pour effectuer ses tâches */
     private String _memory;
     

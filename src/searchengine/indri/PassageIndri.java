@@ -1,6 +1,5 @@
 package searchengine.indri;
 
-
 /**
  * Cette classe contient les informations importantes liées à un passage retrouvé par Indri.  
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import util.GetProperties;
-import util.webpageclassification.ProcessFeatures;
 import weka.WekaAttribute;
 import weka.WekaLearner;
 import weka.classifiers.Evaluation;

@@ -1,15 +1,14 @@
-package toto.eval.type;
+package todo.eval.type;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-import entityranking.QuerySearchEngine;
-
 import util.GetProperties;
 import util.SortKeysMapByNumberValues;
+import web.searchenginequery.AbstractWebSearchEngineQuery;
+import web.searchenginequery.WebSearchEngineQueryFactory;
 import word.NounTransformation;
 import word.probabilitydistribution.NGramsDirichletSmoothing;
 import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
@@ -111,8 +110,8 @@ public class Eval {
 				for(String type : types)
 				{
 					//System.err.println(type+" "+NounTransformation.pluralForm(type));
-					QuerySearchEngine qse = new QuerySearchEngine();
-					qse.queryBoss("\""+NounTransformation.pluralForm(type)+" * "+instance+"\"", 0); //Interrogation de Boss
+					AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
+					qse.query("\""+NounTransformation.pluralForm(type)+" * "+instance+"\"", 0); //Interrogation de Boss
 					hits.put(type, new Double(qse.getTotalHits()));
 				}
 
