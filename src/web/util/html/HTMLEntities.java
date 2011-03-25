@@ -7,19 +7,13 @@ import java.util.regex.Pattern;
 
 /**
  * Map les caractères UTF-8 vers leur équivalent HTML et inversement.
- * @author unknown
- *
  */
 public class HTMLEntities {
  
-  /**
-   * Entités HTML avec leur équivalent UTF-8.
-   */
+  /** Entités HTML avec leur équivalent UTF-8. */
   private static Map<String, Character> HTML_ENTITIES;
  
-  /**
-   * Caractères UTF-8 avec leur équivalent entité.
-   */
+  /** Caractères UTF-8 avec leur équivalent entité. */
   private static Map<Character, String> UTF8_CHARS;
  
   /**

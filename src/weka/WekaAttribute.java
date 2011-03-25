@@ -26,7 +26,6 @@ import weka.core.FastVector;
 
 /**
  * Wrapper around the Weka attributes.
- * 
  * @author David Nadeau (pythonner@gmail.com)
  */
 public class WekaAttribute {
@@ -34,7 +33,6 @@ public class WekaAttribute {
 	/**
 	 * Construct a numeric attribute.
 	 * Possible values are real numbers.
-	 * 
 	 * @param pi_Label	Name of the attribute
 	 */
 	public WekaAttribute(String pi_Label) {
@@ -46,7 +44,6 @@ public class WekaAttribute {
 	/**
 	 * Construct a nominal attribute.
 	 * Possible values must be given.
-	 * 
 	 * @param pi_Label	Name of the attribute
 	 * @param pi_Values	Possible values
 	 */
@@ -62,7 +59,6 @@ public class WekaAttribute {
 		
 	/**
 	 * Checks if the attribute is numeric
-	 * 
 	 * @return True if numeric, False if nominal
 	 */
 	public boolean IsNumeric() {
@@ -71,7 +67,6 @@ public class WekaAttribute {
 	
 	/**
 	 * Gets the name of an attribute.
-	 * 
 	 * @return Name
 	 */
 	public String Label() {
@@ -80,11 +75,9 @@ public class WekaAttribute {
 	
 	/**
 	 * Gets the possible values for a nominal attribute.
-	 * 
 	 * @return A vector of values (null if the attribute is numeric)
 	 */
 	public FastVector Values() {
 		return m_Values;
 	}
-	
 }

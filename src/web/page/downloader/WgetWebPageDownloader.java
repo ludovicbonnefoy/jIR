@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Permet de récupérer des pages web en utilisant l'outil wget.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class WgetWebPageDownloader extends AbstractExternalWebPageDownloader 
 {
 	public WgetWebPageDownloader(String executablePath)

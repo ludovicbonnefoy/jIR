@@ -2,6 +2,10 @@ package web.page.downloader;
 
 import java.io.IOException;
 
+/**
+ * Les classes implémentant cette inferface ont pour but de récupèrer la page web correspondante à l'url et la stocker dans un fichier.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public interface WebPageDownloaderInterface 
 {
 	/**
