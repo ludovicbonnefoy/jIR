@@ -172,9 +172,10 @@ public class NGramsProbabilityDistribution
 	 * Renvoie l'ensemble des ngrammes présents avec leur nombre d'occurences.
 	 * @return Ensemble des couples ngrammes/nombre d'occurences.
 	 */
+	@SuppressWarnings("unchecked")
 	public HashMap<String, Long> getFrequenciesMap()
 	{
-		return _freqs;
+		return (HashMap<String, Long>)_freqs.clone();
 	}
 
 	/**

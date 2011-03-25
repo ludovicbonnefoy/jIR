@@ -11,14 +11,25 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-
+/**
+ * Utilisation du TreeTagger pour tokeniser des textes.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class TreeTaggerTokeniser extends AbstractExternalTokeniser 
 {
+	/**
+	 * Création d'un tokeniseur utilisant le TreeTagger.
+	 * @param executablePath Chemin où trouver le TreeTagger.
+	 */
 	public TreeTaggerTokeniser(String executablePath)
 	{
 		super(executablePath);
 	}
 
+	/**
+	 * Tokenise le texte présent dans un fichier.
+	 * @param file Fichier à tokeniser.
+	 */
 	public ArrayList<String> tokenise(File file) 
 	{
 		ArrayList<String> tokens = new ArrayList<String>();
@@ -49,7 +60,5 @@ public class TreeTaggerTokeniser extends AbstractExternalTokeniser
 		}
 		
 		return tokens;
-
 	}
-
 }

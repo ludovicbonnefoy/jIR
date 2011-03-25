@@ -10,7 +10,7 @@ package word.probabilitydistribution;
 public class NGramsDirichletSmoothing 
 {
 	/** Propose une méthode de singleton. */
-	private static NGramsDirichletSmoothing instance; 
+	private static NGramsDirichletSmoothing _instance; 
 	
 	/** Distribution des probabilités de référence. */
 	private NGramsProbabilityDistributionLaplaceSmoothed _world;
@@ -20,10 +20,10 @@ public class NGramsDirichletSmoothing
 	 * @return L'instance courante.
 	 */
 	public static NGramsDirichletSmoothing getInstance() {
-        if (null == instance) { // Premier appel
-            instance = new NGramsDirichletSmoothing(new NGramsProbabilityDistributionLaplaceSmoothed());
+        if (null == _instance) { // Premier appel
+            _instance = new NGramsDirichletSmoothing(new NGramsProbabilityDistributionLaplaceSmoothed());
         }
-        return instance;
+        return _instance;
 	}
 	
 	/**
@@ -31,10 +31,10 @@ public class NGramsDirichletSmoothing
 	 * @return L'instance courante.
 	 */
 	public static NGramsDirichletSmoothing getInstance(NGramsProbabilityDistributionLaplaceSmoothed ngpd) {
-        if (null == instance) { // Premier appel
-            instance = new NGramsDirichletSmoothing(ngpd);
+        if (null == _instance) { // Premier appel
+            _instance = new NGramsDirichletSmoothing(ngpd);
         }
-        return instance;
+        return _instance;
 	}
 	
 	/**

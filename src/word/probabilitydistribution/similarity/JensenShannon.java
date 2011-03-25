@@ -1,8 +1,9 @@
 package word.probabilitydistribution.similarity;
 
 /**
+ * Calcul de la distance classique de Jensen-Shannon entre deux distributions.
  * Attention : tout les éléments de first doivent être présents dans second et inversement. Si ce n'est pas le cas, penser à utiliser des distributions lissées
- * @author ludo
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
 public class JensenShannon extends AbstractProbabilityDistributionSimilarity 
 {

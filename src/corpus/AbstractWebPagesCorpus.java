@@ -42,7 +42,22 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
-		_directory = directory;
+		_directory = new File(directory.getAbsolutePath());
+	}
+	
+	/**
+	 * Construit un corpus comme une copie d'un autre.
+	 * @param wpc Corpus à copier.
+	 */
+	public AbstractWebPagesCorpus(AbstractWebPagesCorpus wpc) 
+	{
+		_directory = new File(wpc.getCorpusDirectory().getAbsolutePath());
+		_fileNumber = wpc.getFileNumber();
+		
+		_webPages = new HashMap<String, File>();
+		Set<String> urls = wpc.getURLs();
+		for(String url : urls)
+			_webPages.put(url, wpc.getWebPage(url));
 	}
 
 	/**
@@ -164,7 +179,7 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 
 	public File getCorpusDirectory()
 	{
-		return _directory;
+		return new File(_directory.getAbsolutePath());
 	}
 
 	public Integer getFileNumber()

@@ -43,5 +43,4 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 
 		return true;
 	}
-
 }

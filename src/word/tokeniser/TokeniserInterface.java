@@ -3,6 +3,10 @@ package word.tokeniser;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Les classes implémentant cette inferface ont pour but de découper un texte en tokens.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public interface TokeniserInterface 
 {
 	/**

@@ -1,8 +1,10 @@
 package word.probabilitydistribution.similarity;
 
 /**
- * Attention : tout les éléments de first doivent être présents dans second et inversement. Si ce n'est pas le cas, penser à utiliser des distributions lissées
- * @author ludo
+ * Calcul d'une distance modifiée de Jensen-Shannon entre deux distributions.
+ * La modification est que ce n'est pas le vocabulaire de la première distribution qui est utilisé mais l'union des deux pour chaque KL fait.
+ * Attention : tout les éléments de first doivent être présents dans second et inversement. Si ce n'est pas le cas, penser à utiliser des distributions lissées.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
 public class JensenShannonUnion extends AbstractProbabilityDistributionSimilarity 
 {

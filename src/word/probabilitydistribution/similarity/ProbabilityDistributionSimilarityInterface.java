@@ -2,6 +2,10 @@ package word.probabilitydistribution.similarity;
 
 import word.probabilitydistribution.NGramsProbabilityDistribution;
 
+/**
+ * Les classes implémentant cette inferface ont pour but de calculer la similarité de deux distributions de ngrammes.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public interface ProbabilityDistributionSimilarityInterface 
 {
 	/**

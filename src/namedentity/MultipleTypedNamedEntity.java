@@ -65,9 +65,10 @@ public class MultipleTypedNamedEntity extends NamedEntity
 	 * Retourne l'arbre des types de l'entité.
 	 * @return Arbre (Graph sans cycle) des types de l'entité.
 	 */
+	@SuppressWarnings("unchecked")
 	public DefaultDirectedGraph<String, DefaultEdge> getTypeHierarchy()
 	{
-		return _typeHierarchy;
+		return (DefaultDirectedGraph<String, DefaultEdge>)_typeHierarchy.clone();
 	}
 
 }

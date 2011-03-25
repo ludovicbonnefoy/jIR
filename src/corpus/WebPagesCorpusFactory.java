@@ -8,7 +8,7 @@ import util.GetProperties;
 /**
  * Classe ayant pour but de fournir un corpus. 
  * Elle permet de ne pas à avoir à modifier le code en profondeur lorsque l'on souhaite modifier le type de corpus.
- * Le type corpus a utiliser est recherché dans un fichier properties. Dans le cas où rien n'est trouvé, un corpus d'un type par défaut est créé.
+ * Le type corpus à utiliser est recherché dans un fichier properties. Dans le cas où rien n'est trouvé, un corpus d'un type par défaut est créé.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
 public class WebPagesCorpusFactory 

@@ -8,23 +8,28 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+/**
+ * Classe abstraite implémentant la création d'un tokeniseur et une ou deux méthodes communes.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public abstract class AbstractExternalTokeniser implements TokeniserInterface 
 {
-	/**
-	 * Chemin complet où l'on va trouver l'éxécutable du tokeniser
-	 */
+	/** Chemin complet où l'on va trouver l'éxécutable du tokeniser. */
 	protected String _executablePath;
 	
 	/**
-	 * Construit un objet et enregistre le chemin pour trouver l'éxécutable
-	 * @param executablePath Chemin de l'éxécutable
+	 * Construit un objet et enregistre le chemin pour trouver l'éxécutable.
+	 * @param executablePath Chemin de l'éxécutable.
 	 */
 	public AbstractExternalTokeniser(String executablePath)
 	{
 		_executablePath = executablePath;
 	}
 	
-	
+	/**
+	 * Tokenise le texte présent dans une chaîne.
+	 * @param text Chaîne à tokeniser.
+	 */
 	public ArrayList<String> tokenise(String text) 
 	{
 		try {

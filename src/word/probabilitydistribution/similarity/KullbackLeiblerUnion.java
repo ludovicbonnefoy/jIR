@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Attention : calcul d'une divergence et non d'une similarité
+ * Calcul d'une divergence modifiée de Kullback-Leibler entre deux distributions.
+ * La modification est que ce n'est pas le vocabulaire de la première distribution qui est utilisé mais l'union des deux.
+ * Attention : calcul d'une divergence et non d'une similarité.
  * Attention : tout les éléments de first doivent être présents dans second et inversement. Si ce n'est pas le cas, penser à utiliser des distributions lissées
- * @author ludo
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
 public class KullbackLeiblerUnion extends AbstractProbabilityDistributionSimilarity 
 {
