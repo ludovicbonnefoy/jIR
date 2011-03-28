@@ -2,6 +2,11 @@ package web.searchenginequery;
 
 import java.util.ArrayList;
 
+/**
+ * Classe abstraite implémentant la quasi-totalité des méthodes de l'interface correspondante.
+ * La seule méthode non implémentée est celle interrogeant le moteur de recherche.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public abstract class AbstractWebSearchEngineQuery implements WebSearchEngineQueryInterface 
 {
 	/** Liste des urls des résultats dans l'ordre décroissants de pertinence */
@@ -21,14 +26,16 @@ public abstract class AbstractWebSearchEngineQuery implements WebSearchEngineQue
     	_totalHits = new Long(0);
     }
     
+	@SuppressWarnings("unchecked")
 	public ArrayList<String> getURLs() 
 	{
-		return _urls;
+		return (ArrayList<String>) _urls.clone();
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<String> getSnippets() 
 	{
-		return _snippets;
+		return (ArrayList<String>)_snippets.clone();
 	}
 
 	public Long getTotalHits() 

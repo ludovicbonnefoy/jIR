@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Permet d'interroger le moteur de recherche Google.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class GoogleQuery extends AbstractWebSearchEngineQuery 
 {
 	public GoogleQuery()
@@ -20,8 +24,8 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 	/**
 	 * Interrogation de Google via son API
 	 * Attention totalHits correct si totalHits<count, sinon totalHits = count..
-	 * @param query Requête
-	 * @param count Nombre de résultats souhaités
+	 * @param query Requête.
+	 * @param count Nombre de résultats souhaités.
 	 */
 	public void query(String query, int count)
 	{

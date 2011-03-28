@@ -14,6 +14,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Permet d'interroger le moteur de recherche Yahoo! via son interface Boss.
+ * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
+ */
 public class BossQuery extends AbstractWebSearchEngineQuery
 {
 	public BossQuery()
