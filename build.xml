@@ -63,7 +63,7 @@
 		<!-- remove previous jars -->
 		<delete>
 			<fileset dir="${dist}/lib" includes="**"/>
-			<file file="${dist}/entity-ranking.sh" />
+			<file file="${dist}/jIR.sh" />
 		</delete>
 		
 		<!-- copy library jars -->
@@ -75,7 +75,7 @@
 		</copy>
 		
 		<!-- create jar -->
-		<jar jarfile="${dist}/lib/entity-ranking.jar">
+		<jar jarfile="${dist}/lib/jIR.jar">
 			<fileset dir="${classes}">
 				<include name="**" />
 			</fileset>
@@ -90,15 +90,13 @@
 			</path>
 			<map from="${dist}" to="$$BASEDIR" />
 		</pathconvert>
-		<copy file="tools/launcher-template.sh" tofile="${dist}/entity-ranking.sh">
+		<copy file="tools/launcher-template.sh" tofile="${dist}/jIR.sh">
 		    <filterset>
 		      <filter token="CLASSPATH" value="${launcher.classpath}:$$BASEDIR" />
-	         <!-- <filter token="MAINCLASS" value="entityranking.Main" /> -->
               <filter token="MAINCLASS" value="eval.type.Eval" /> 
-              <!--<filter token="MAINCLASS" value="eval.type.BuildReferenceModels" /> -->
 		    </filterset>
 		</copy>
-		<chmod perm="755" file="${dist}/entity-ranking.sh"/>
+		<chmod perm="755" file="${dist}/jIR.sh"/>
 	</target>
 
 	<!-- Clean build directory (timestamps, classes, jars, generated sources) -->
