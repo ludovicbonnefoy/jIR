@@ -1,4 +1,4 @@
-package word.probabilitydistribution;
+package token.probabilitydistribution;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import web.util.html.HTML2Text;
  * Propose des calculs de ngrammes sur divers type de document et/ou corpus,  
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
-public class NGramsProbabilityDistribution
+public class NGramsProbabilityDistribution implements Serializable
 {
 	private static final long serialVersionUID = -4539352062797597509L;
 
@@ -56,19 +57,59 @@ public class NGramsProbabilityDistribution
 	@SuppressWarnings("unchecked")
 	public NGramsProbabilityDistribution(NGramsProbabilityDistribution ngpd)
 	{
+		System.err.println("ll");
 		_freqs = (HashMap<String, Long>) ngpd.getFrequenciesMap().clone();
+		System.err.println("ll");
 		_total = ngpd.getVocabularySize();
 		_n = ngpd.getN();
 	}
-
+	
+	public void loadFromFreqFile(File file, Integer n)
+	{
+		_freqs = new HashMap<String, Long>();
+		_total = new Long(0);
+		try {
+			BufferedReader unigrams = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			String unigram;
+			while((unigram = unigrams.readLine()) != null) //pour chaque token
+			{
+				String[] elements = unigram.split(" "); //on récupère les infos
+				if(elements.length != n+1)
+				{
+					System.err.println("erreur");
+					System.exit(1);
+				}
+				
+				String ngram = "";
+				int i = 0;
+				for(; i < n; i++)
+					ngram += elements[i];
+				
+				_freqs.put(ngram, new Long(elements[i])); 
+				_total += new Long(elements[i]);
+			}
+			_n = n;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Récupération d'une distribution sérialisée.
 	 * @param serializedNGramsProbabilityDistribution Fichier contenant la distribution sérialisée.
 	 */
+	@SuppressWarnings("unchecked")
 	public NGramsProbabilityDistribution(File serializedNGramsProbabilityDistribution)
 	{
 		try {
-			readObject(new ObjectInputStream(new FileInputStream(serializedNGramsProbabilityDistribution)));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serializedNGramsProbabilityDistribution));
+			NGramsProbabilityDistribution tmp = (NGramsProbabilityDistribution)(ois.readObject());
+
+			_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
+			_total = tmp.getVocabularySize();
+			_n = tmp.getN();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -209,42 +250,17 @@ public class NGramsProbabilityDistribution
 	public void serialize(String path)
 	{
 		try {
-			writeObject(new ObjectOutputStream(new FileOutputStream(path)));
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path));
+			out.writeObject(this);
+			out.flush();
+			out.close();
+			//writeObject(new ObjectOutputStream(new FileOutputStream(path)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Sauvegarde de l'instance dans un fichier.
-	 * @param out Flux dans lequel est sauvegardé l'instance.
-	 * @throws IOException Dans le cas où l'objet n'a pas été sauvegardé.
-	 */
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException
-	{
-		out.writeObject(this); //enregistrement
-		out.flush();
-		out.close();
-	}
-
-	/**
-	 * Chargement d'une instance sérialisée dans un flux.
-	 * @param in Flux d'où va être récupéré l'instance.
-	 * @throws IOException Problème de lecture du fichier.
-	 * @throws ClassNotFoundException 
-	 */
-	@SuppressWarnings("unchecked")
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		NGramsProbabilityDistribution tmp = (NGramsProbabilityDistribution)(in.readObject());
-
-		_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
-		_total = tmp.getVocabularySize();
-		_n = tmp.getN();
-	}
-
 
 	/**
 	 * Calcul de la probabilité d'apparition des n-grammes dans un fichier.

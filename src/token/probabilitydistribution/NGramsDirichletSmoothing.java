@@ -1,4 +1,4 @@
-package word.probabilitydistribution;
+package token.probabilitydistribution;
 
 /**
  * Classe qui effectue le lissage d'une valeur associée à un ngramme.

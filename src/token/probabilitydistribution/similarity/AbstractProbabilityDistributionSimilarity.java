@@ -1,6 +1,6 @@
-package word.probabilitydistribution.similarity;
+package token.probabilitydistribution.similarity;
 
-import word.probabilitydistribution.NGramsProbabilityDistribution;
+import token.probabilitydistribution.NGramsProbabilityDistribution;
 
 /**
  * Classe abstraite implémentant la quasi-totalité des méthodes de l'interface correspondante.

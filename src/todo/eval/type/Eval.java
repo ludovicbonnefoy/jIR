@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import token.NounTransformation;
+import token.probabilitydistribution.NGramsDirichletSmoothing;
+import token.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
+import token.probabilitydistribution.NGramsProbabilityDistributionLaplaceSmoothed;
+import token.probabilitydistribution.similarity.AbstractProbabilityDistributionSimilarity;
+import token.probabilitydistribution.similarity.ProbabilityDistributionSimilarityFactory;
 import util.GetProperties;
 import util.SortKeysMapByNumberValues;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
 import web.searchenginequery.WebSearchEngineQueryFactory;
-import word.NounTransformation;
-import word.probabilitydistribution.NGramsDirichletSmoothing;
-import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
-import word.probabilitydistribution.NGramsProbabilityDistributionLaplaceSmoothed;
-import word.probabilitydistribution.similarity.AbstractProbabilityDistributionSimilarity;
-import word.probabilitydistribution.similarity.ProbabilityDistributionSimilarityFactory;
 
 import namedentity.DBPediaOwlNamedEntity;
 
@@ -236,23 +236,23 @@ public class Eval {
 					pwQRels.println(compteur +" 0 "+ type.replaceAll(" ", "_") +" "+ 1);
 				
 				//Calcul de l'appartenance aux types et écriture des résultats dans le fichier final
-				HashMap<String, Double> divergences = new HashMap<String, Double>();
+				HashMap<String, Double> similarities = new HashMap<String, Double>();
 
 				for(String type : pddsTypes.keySet())
 				{
 					AbstractProbabilityDistributionSimilarity pds = ProbabilityDistributionSimilarityFactory.get();
-					Double divergence = Math.abs(pds.similarity(pddsInstances.get(instance),pddsTypes.get(type)));
+					Double similarity = Math.abs(pds.similarity(pddsInstances.get(instance),pddsTypes.get(type)));
 
-					divergences.put(type, divergence);
+					similarities.put(type, similarity);
 				}
 
 
-				List<Object> sortedKeys = SortKeysMapByNumberValues.ascendingSort(new HashMap<Object, Number>(divergences));
+				List<Object> sortedKeys = SortKeysMapByNumberValues.descendingSort(new HashMap<Object, Number>(similarities));
 				int i = 1;
 				for(Object oKey : sortedKeys)
 				{
 					String type = (String)oKey;
-					pwResults.println(compteur +" Q0 "+ type.replaceAll(" ", "_") +" "+ i +" "+ (1./divergences.get(type))+" STANDARD");
+					pwResults.println(compteur +" Q0 "+ type.replaceAll(" ", "_") +" "+ i +" "+ similarities.get(type)+" STANDARD");
 					i++;
 				}
 			}

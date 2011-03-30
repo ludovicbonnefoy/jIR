@@ -1,4 +1,4 @@
-package word.probabilitydistribution.similarity;
+package token.probabilitydistribution.similarity;
 
 /**
  * Calcul d'une distance modifiée de Jensen-Shannon entre deux distributions.

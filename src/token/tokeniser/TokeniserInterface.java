@@ -1,4 +1,4 @@
-package word.tokeniser;
+package token.tokeniser;
 
 import java.io.File;
 import java.util.ArrayList;

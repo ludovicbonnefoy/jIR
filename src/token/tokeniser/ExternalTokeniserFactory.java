@@ -1,4 +1,4 @@
-package word.tokeniser;
+package token.tokeniser;
 
 import util.GetProperties;
 

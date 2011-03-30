@@ -1,4 +1,4 @@
-package word.probabilitydistribution;
+package token.probabilitydistribution;
 
 import java.io.File;
 

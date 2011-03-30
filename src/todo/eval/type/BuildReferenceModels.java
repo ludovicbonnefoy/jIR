@@ -18,10 +18,10 @@ import org.w3c.dom.NodeList;
 import corpus.AbstractWebPagesCorpus;
 import corpus.WebPagesCorpusFactory;
 
+import token.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
 import util.GetProperties;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
 import web.searchenginequery.WebSearchEngineQueryFactory;
-import word.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed;
 
 public class BuildReferenceModels 
 {
@@ -117,15 +117,15 @@ public class BuildReferenceModels
 			GetProperties properties = GetProperties.getInstance();
 			properties.init("properties.properties");
 			
-			BufferedReader brTokens = new BufferedReader(new InputStreamReader(new FileInputStream(classesFilePath))); //lecture de sa sortie
+			BufferedReader brTokens = new BufferedReader(new InputStreamReader(new FileInputStream(classesFilePath)));
 			String type = new String();
 			
-			while((type = brTokens.readLine()) != null) //lecture de la sortie du TreeTagger élément par élément
+			while((type = brTokens.readLine()) != null)
             {
 				System.out.println(type);
 
 				AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
-				qse.query(type, nbrDocs); //Interrogation de Boss
+				qse.query(type, nbrDocs); 
 			
 				String snippets = new String();
 				for(String snippet : qse.getSnippets())

@@ -1,4 +1,4 @@
-package word;
+package token;
 
 import java.util.ArrayList;
 import java.util.Collections;

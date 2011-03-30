@@ -93,7 +93,8 @@
 		<copy file="tools/launcher-template.sh" tofile="${dist}/jIR.sh">
 		    <filterset>
 		      <filter token="CLASSPATH" value="${launcher.classpath}:$$BASEDIR" />
-              <filter token="MAINCLASS" value="eval.type.Eval" /> 
+              <!--<filter token="MAINCLASS" value="eval.type.Eval" /> -->
+              <filter token="MAINCLASS" value="token.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed" /> 
 		    </filterset>
 		</copy>
 		<chmod perm="755" file="${dist}/jIR.sh"/>

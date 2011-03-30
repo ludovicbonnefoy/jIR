@@ -3,10 +3,14 @@ package corpus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import util.GetProperties;
 import web.page.downloader.AbstractExternalWebPageDownloader;
 import web.page.downloader.ExternalWebPageDownloaderFactory;
+import web.searchenginequery.AbstractWebSearchEngineQuery;
+import web.searchenginequery.WebSearchEngineQueryFactory;
 
 /**
  * Corpus pour lequel les pages web correspondantes aux urls recherchées sont collectées sur le web via un outil système dédié.
@@ -42,5 +46,27 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 		}
 
 		return true;
+	}
+	
+	public static void main(String[] args) 
+	{
+		GetProperties properties = GetProperties.getInstance();
+		properties.init("properties.properties");
+		
+		AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
+		qse.query("michael schumacher", 10); //Interrogation de Boss
+
+		System.out.println(qse.getURLs().size());
+		
+		AbstractWebPagesCorpus webCorpus;
+		try {
+			webCorpus = WebPagesCorpusFactory.get(new File("tmpCorpus/"));
+			Set<String> errors = webCorpus.build(new HashSet<String>(qse.getURLs())); //aspiration des pages
+			for(String error : errors)
+				System.out.println(error);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

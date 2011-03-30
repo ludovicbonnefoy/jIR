@@ -1,6 +1,6 @@
-package word.probabilitydistribution.similarity;
+package token.probabilitydistribution.similarity;
 
-import word.probabilitydistribution.NGramsProbabilityDistribution;
+import token.probabilitydistribution.NGramsProbabilityDistribution;
 
 /**
  * Les classes implémentant cette inferface ont pour but de calculer la similarité de deux distributions de ngrammes.

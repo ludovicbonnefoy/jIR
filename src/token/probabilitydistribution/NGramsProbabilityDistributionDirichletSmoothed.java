@@ -1,4 +1,4 @@
-package word.probabilitydistribution;
+package token.probabilitydistribution;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,10 +54,28 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 	 * Récupération d'une distribution sérialisée.
 	 * @param serializedNGramsProbabilityDistributionDirichletSmoothed Fichier contenant la distribution sérialisée.
 	 */
+	@SuppressWarnings("unchecked")
 	public NGramsProbabilityDistributionDirichletSmoothed(File serializedNGramsProbabilityDistributionDirichletSmoothed)
 	{
 		try {
-			readObject(new ObjectInputStream(new FileInputStream(serializedNGramsProbabilityDistributionDirichletSmoothed)));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serializedNGramsProbabilityDistributionDirichletSmoothed));
+			
+			Object obj = ois.readObject();
+			
+			if(obj.getClass() == this.getClass())
+			{
+				NGramsProbabilityDistributionDirichletSmoothed tmp = (NGramsProbabilityDistributionDirichletSmoothed)(obj);
+				_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
+				_total = tmp.getVocabularySize();
+				_mu = tmp.getMu(); 
+			}
+			else
+			{
+				NGramsProbabilityDistribution tmp = (NGramsProbabilityDistribution)(obj);
+				_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
+				_total = tmp.getVocabularySize();
+				_mu = new Double(2000); 
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -104,6 +122,25 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 		_mu = mu;
 	}
 	
+	public static void main(String[] args) 
+	{
+		String name = "";
+		for(int i = 0; i < args.length; i++)
+			name += args[i]+" ";
+		
+		name= name.trim();
+		
+		String toto = name.substring(name.lastIndexOf("/")+1);
+		System.out.println(toto+ " "+name);
+		
+		NGramsProbabilityDistributionDirichletSmoothed ngrams = new NGramsProbabilityDistributionDirichletSmoothed();
+		ngrams.loadFromFreqFile(new File(name),1);
+		ngrams.serialize("tmp/1NewGram/"+toto);
+		
+		//NGramsProbabilityDistribution ngrams = new NGramsProbabilityDistribution(new File("tmp/unigramWorld.ser"));
+		//System.out.println(ngrams.getFrequenciesMap().get("the"));
+	}
+	
 	/**
 	 * Permet de récupérer la probabilité lissée d'apparition du ngramme.
 	 * @param ngram Ngramme dont on veux la probabilité d'apparition.
@@ -115,32 +152,5 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 			return NGramsDirichletSmoothing.getInstance().smooth(ngram, _freqs.get(ngram), _total, _mu);
 		else
 			return NGramsDirichletSmoothing.getInstance().smooth(ngram, new Long(0), _total, _mu);
-	}
-	
-	/**
-	 * Chargement d'une instance sérialisée dans un flux.
-	 * @param in Flux d'où va être récupéré l'instance.
-	 * @throws IOException Problème de lecture du fichier.
-	 * @throws ClassNotFoundException 
-	 */
-	@SuppressWarnings("unchecked")
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		Object obj = in.readObject();
-		
-		if(obj.getClass() == this.getClass())
-		{
-			NGramsProbabilityDistributionDirichletSmoothed tmp = (NGramsProbabilityDistributionDirichletSmoothed)(obj);
-			_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
-			_total = tmp.getVocabularySize();
-			_mu = tmp.getMu(); 
-		}
-		else
-		{
-			NGramsProbabilityDistribution tmp = (NGramsProbabilityDistribution)(obj);
-			_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
-			_total = tmp.getVocabularySize();
-			_mu = new Double(2000); 
-		}
 	}
 }

@@ -7,28 +7,16 @@ import java.io.FileInputStream;
  * Propriétés, singleton.
  * Il contient les différentes valeurs et chemin des éléments nécessaires pour faire fonctionner le système.
  * Les différents éléments qui doivent être définis dans ce fichier sont :<br/>
- * topicCorpus : le chemin du dossier qui va contenir les fichiers récupérés pour le topic.<br/>
- * passagesCorpus : le chemin du dossier qui va contenir les passages intermédiaires créés.<br/>
- * referenceCorpus : le chemin du dossier qui va contenir les fichiers des ENs de références.<br/>
- * candidateCorpus : le chemin du dossier qui va contenir les fichiers d'une EN candidate.<br/>
- * clueWebEqCorpus : le chemin du dossier contenant les fichiers précisant l'équivalence url/idClueWeb.<br/>
- * clueWebRacine : racine du clueWeb.<br/>
- * 7Web : chemin du corpus 7Web.<br/>
- * indri : chemin des éxécutables Indri.<br/>
- * topicIndex : chemin de l'index pour le corpus du topic.<br/>
- * passagesIndex : chemin de l'index pour les passages.<br/>
- * clueWebEqIndex : chemin de l'index pour le corpus de correspondance url/idClueWeb.<br/>
- * resultsDirectory : chemin du dossier qui va contenir les résultats aux topics.<br/>
- * tmpDirectory : chemin du dossier qui va contenir tous le fichiers temporaires.<br/>
- * treetaggerDirectory : chemin du treeTagger.<br/>
- * wget : chemin du wget.<br/>
- * stanfordPath : chemin du dossier du stanford-NER.<br/>
- * clueWebPart1 : chemin de la première partie du clueWeb.<br/>
- * clueWebPart2 : chemin de la seconde partie du clueWeb.<br/>
- * unigramWorldSer : chemin de l'objet sérialisé des fréquences de monde.<br/>
- * unigramWorld : chemin du fichier contenant les fréquences du monde.<br/>
- * GoodArff : chemin du fichier arff contenantn l'apprentissage pour déterminer si une EN peut répondre à la question ou non.<br/>
- * qrels : chemin du fichier de référence pour l'évaluation.
+ * webPagesCorpusType : Type de corpus utilisé. Valeurs possibles : trec, web.
+ * webSearchEngine : moteur de recherche à interroger. Valeurs possibles : boss, google.
+ * externalWebPagesDownloader : nom de l'outil à utiliser pour récupérer les pages web. Valeurs possibles : wget.
+ * externalWebPagesDownloaderPath : chemin complet de l'executable pour récupérer les pages Web.
+ * externalTokeniser : nom de l'outil à utiliser. Valeurs possibles : treeTagger.
+ * externalTokeniserPath : chemin complet de l'executable pour tokeniser du texte.
+ * namedEntityRecognitionTool : Outil qui va être utilisé pour la reconnaissance d'entités nommées. Valeurs possibles : stanfordNER.
+ * stanfordClassifierPath : chemin vers le dossier où l'on va pouvoir trouver le classifier à utiliser pour la reco d'entités.
+ * probabilityDistributionSimilarity : type de similarité à utiliser. Valeurs possibles : kullbackLeibler, kullbackLeiblerUnion, jensenShannon, jensenShannonUnion.
+ * webPagesGenreClassifier : spécifie un chemin vers un classifieur de pages web sérialisé (et aussi là où celui créer va l'être).
  */
 @SuppressWarnings("serial")
 public class GetProperties extends Properties

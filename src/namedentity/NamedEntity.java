@@ -17,12 +17,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import token.tokeniser.AbstractExternalTokeniser;
+import token.tokeniser.ExternalTokeniserFactory;
 import util.GetProperties;
 import util.SortKeysMapByNumberValues;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
 import web.searchenginequery.WebSearchEngineQueryFactory;
-import word.tokeniser.AbstractExternalTokeniser;
-import word.tokeniser.ExternalTokeniserFactory;
 
 /**
  * Forme la plus simple d'une entité nommée, contient uniquement son nom et sa forme canonique.
@@ -53,6 +53,15 @@ public class NamedEntity implements Serializable
 	 * @return Texte de l'entité nommée.
 	 */
 	public String getName()
+	{
+		return _namedEntity;
+	}
+	
+	/**
+	 * Retourne le texte de l'entité nommée (nom par abus).
+	 * @return Texte de l'entité nommée.
+	 */
+	public String toString()
 	{
 		return _namedEntity;
 	}

@@ -39,10 +39,10 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	{
 		if(!directory.exists())
 			throw (new FileNotFoundException("directory not found"));
-
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
 		_directory = new File(directory.getAbsolutePath());
+
 	}
 	
 	/**
@@ -67,7 +67,17 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	AbstractWebPagesCorpus(String corpusPath)
 	{
 		try {
-			readObject(new ObjectInputStream(new FileInputStream(corpusPath)));
+			
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(corpusPath));
+			
+			AbstractWebPagesCorpus tmp = (AbstractWebPagesCorpus)(ois.readObject());
+
+			for(String url : tmp.getURLs())
+				_webPages.put(url, tmp.getWebPage(url));
+
+			_directory = tmp.getCorpusDirectory();
+
+			_fileNumber = tmp.getFileNumber();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -83,7 +93,6 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 		for(int i=0; i<files.length; i++) 
 			files[i].delete(); 
 
-		_directory = null;
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
 	}
@@ -191,29 +200,13 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	{
 		try 
 		{
-			writeObject(new ObjectOutputStream(new FileOutputStream(path)));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
+			oos.writeObject(this);
+			oos.flush();
+			oos.close();
 		}
 		catch (java.io.IOException e) {
 			e.getMessage();
 		}
-	}
-
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException
-	{
-		out.writeObject(this);
-		out.flush();
-		out.close();
-	}
-
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		AbstractWebPagesCorpus tmp = (AbstractWebPagesCorpus)(in.readObject());
-
-		for(String url : tmp.getURLs())
-			_webPages.put(url, tmp.getWebPage(url));
-
-		_directory = tmp.getCorpusDirectory();
-
-		_fileNumber = tmp.getFileNumber();
 	}
 }
