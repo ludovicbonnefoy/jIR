@@ -271,11 +271,16 @@ public class NGramsProbabilityDistribution implements Serializable
 	{
 		_freqs = new HashMap<String, Long>();  
 		_n = n;
+		_total = new Long(0);
 
 		TreeTagger treeTagger = new TreeTagger(GetProperties.getInstance().getProperty("treeTaggerPath"));
 		ArrayList<ArrayList<String>> tokensTag = treeTagger.tag(file);
-
+		System.out.println(tokensTag.toString());
+		
 		ArrayList<String> ngramList = new ArrayList<String>();
+		
+		for(int i = 0; i < n; i++)
+			ngramList.add("");
 
 		for(ArrayList<String> tokenTag : tokensTag)
 		{
@@ -297,12 +302,10 @@ public class NGramsProbabilityDistribution implements Serializable
 
 				for(String ngramWord : ngramList) //pour chaque élément du n-gramme
 					ngram += ngramWord+" "; //on concatène le terme
-
 				add(ngram.trim(), new Long(1));
 			}
 		}
 	}
-
 
 	/** 
 	 * Calcul de la probabilité d'apparition des n-grammes dans une chaîne.
