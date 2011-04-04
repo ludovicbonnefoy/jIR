@@ -275,7 +275,6 @@ public class NGramsProbabilityDistribution implements Serializable
 
 		TreeTagger treeTagger = new TreeTagger(GetProperties.getInstance().getProperty("treeTaggerPath"));
 		ArrayList<ArrayList<String>> tokensTag = treeTagger.tag(file);
-		System.out.println(tokensTag.toString());
 		
 		ArrayList<String> ngramList = new ArrayList<String>();
 		

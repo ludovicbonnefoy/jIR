@@ -38,15 +38,16 @@ public class BossQuery extends AbstractWebSearchEngineQuery
 		_snippets = new ArrayList<String>(0);
 		_totalHits = new Long(0);
 
+		
 		Integer nbrLoops = count/50;
 		if(!(new Integer(count%50)).equals(0))
 			++nbrLoops;
-
-		for(Integer i = 0; i <= nbrLoops ; ++i)//Boss ne permet de récupérer que 50 résultats à la fois
+		System.out.println(count+" "+nbrLoops);
+		for(Integer i = 0; i < nbrLoops ; ++i)//Boss ne permet de récupérer que 50 résultats à la fois
 		{
 			try{
 				//Interrogation
-				URL url = new URL("http://boss.yahooapis.com/ysearch/web/v1/"+query+"?appid=OuxmJgjV34EhKxPJDY4HvcUwJyT_v4Ur4LdpW1f3QiLQXWAAiYhZPZvdJIck9Ik-&format=xml&count=50&filter=-hate,-porn&abstract=long&lang=en&strictlang=1&type=html,text&start="+i);
+				URL url = new URL("http://boss.yahooapis.com/ysearch/web/v1/"+query+"?appid=OuxmJgjV34EhKxPJDY4HvcUwJyT_v4Ur4LdpW1f3QiLQXWAAiYhZPZvdJIck9Ik-&format=xml&count=50&filter=-hate,-porn&abstract=long&lang=en&strictlang=1&type=html,text&start="+(50*i));
 				URLConnection con = url.openConnection ();
 
 				//Extraction des réponses (en XML)
