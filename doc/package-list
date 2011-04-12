@@ -2,7 +2,6 @@ corpus
 namedentity
 namedentity.proximities
 searchengine.indri
-todo.eval.type
 token
 token.probabilitydistribution
 token.probabilitydistribution.similarity

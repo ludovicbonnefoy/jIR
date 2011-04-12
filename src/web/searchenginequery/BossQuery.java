@@ -42,7 +42,7 @@ public class BossQuery extends AbstractWebSearchEngineQuery
 		Integer nbrLoops = count/50;
 		if(!(new Integer(count%50)).equals(0))
 			++nbrLoops;
-		System.out.println(count+" "+nbrLoops);
+		
 		for(Integer i = 0; i < nbrLoops ; ++i)//Boss ne permet de récupérer que 50 résultats à la fois
 		{
 			try{

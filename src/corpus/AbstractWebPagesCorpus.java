@@ -100,7 +100,6 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	public Set<String> build(Set<String> urls)
 	{
 		destroy();
-		System.out.println(urls.size());	
 
 		HashSet<String> errors = new HashSet<String>();
 
@@ -115,7 +114,6 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	public Set<String> add(Set<String> urls)
 	{
 		HashSet<String> errors = new HashSet<String>();
-	//System.out.println(urls.size());	
 
 		for(String url : urls)
 		{

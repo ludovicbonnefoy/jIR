@@ -56,8 +56,6 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 		AbstractWebSearchEngineQuery qse = WebSearchEngineQueryFactory.get();
 		qse.query("michael schumacher", 10); //Interrogation de Boss
 
-		System.out.println(qse.getURLs().size());
-		
 		AbstractWebPagesCorpus webCorpus;
 		try {
 			webCorpus = WebPagesCorpusFactory.get(new File("tmpCorpus/"));

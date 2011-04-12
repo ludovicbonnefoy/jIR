@@ -27,6 +27,8 @@ public class ProbabilityDistributionSimilarityFactory
 				return new JensenShannon();
 			else if (similarity.equals("jensenShannonUnion"))
 				return new JensenShannonUnion();
+			else if (similarity.equals("cosine"))
+				return new Cosine();
 		}
 
 		return new KullbackLeibler();
