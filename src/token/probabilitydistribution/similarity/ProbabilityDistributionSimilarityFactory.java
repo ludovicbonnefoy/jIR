@@ -29,6 +29,10 @@ public class ProbabilityDistributionSimilarityFactory
 				return new JensenShannonUnion();
 			else if (similarity.equals("cosine"))
 				return new Cosine();
+			else if (similarity.equals("jaccard"))
+				return new Jaccard();
+			else if (similarity.equals("dice"))
+				return new DiceCoefficient();
 		}
 
 		return new KullbackLeibler();
