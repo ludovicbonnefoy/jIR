@@ -122,7 +122,7 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 		_mu = mu;
 	}
 	
-	public static void main(String[] args) 
+	public static void main(String[] args) throws FileNotFoundException, IOException
 	{
 		String name = "";
 		for(int i = 0; i < args.length; i++)

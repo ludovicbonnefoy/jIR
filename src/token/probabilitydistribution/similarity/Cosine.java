@@ -44,5 +44,4 @@ public class Cosine extends AbstractProbabilityDistributionSimilarity
 
 		return result;
 	}
-
 }
