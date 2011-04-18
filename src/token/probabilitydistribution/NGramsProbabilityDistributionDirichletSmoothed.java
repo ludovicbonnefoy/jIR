@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 
+import token.probabilitydistribution.smoother.Dirichlet;
+
+
 /**
  * Effectue un lissage de Dirichlet sur les valeurs de la distribution.
  * La probabilité d'appirition d'u ngramme est estimé en fonction d'un corpus du monde.
@@ -149,8 +152,8 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 	public Double get(String ngram)
 	{
 		if(_freqs.containsKey(ngram))
-			return NGramsDirichletSmoothing.getInstance().smooth(ngram, _freqs.get(ngram), _total, _mu);
+			return Dirichlet.getInstance().smooth(ngram, _freqs.get(ngram), _total, _mu);
 		else
-			return NGramsDirichletSmoothing.getInstance().smooth(ngram, new Long(0), _total, _mu);
+			return Dirichlet.getInstance().smooth(ngram, new Long(0), _total, _mu);
 	}
 }

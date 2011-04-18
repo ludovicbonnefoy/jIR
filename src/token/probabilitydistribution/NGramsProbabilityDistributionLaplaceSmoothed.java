@@ -2,6 +2,8 @@ package token.probabilitydistribution;
 
 import java.io.File;
 
+import token.probabilitydistribution.smoother.Laplace;
+
 /**
  * Effectue un lissage de Laplace sur les valeurs de la distribution.
  * Le lissage de Laplace consiste à rajouter 1 au nombre d'occurences et donc de donner 1 à tout élément non vu. 
@@ -45,8 +47,8 @@ public class NGramsProbabilityDistributionLaplaceSmoothed extends NGramsProbabil
 	public Double get(String ngram)
 	{
 		if(_freqs.containsKey(ngram))
-    		return new Double((_freqs.get(ngram) + 1) / new Double(_total));
+			return Laplace.smooth(_freqs.get(ngram), _total);
     	else
-    		return new Double( new Double(1) / new Double(_total)); 
+			return Laplace.smooth(new Long(0), _total);
 	}
 }
