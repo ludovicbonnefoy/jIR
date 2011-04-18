@@ -2,21 +2,21 @@ package token.probabilitydistribution.similarity;
 
 import java.util.HashMap;
 
-import token.probabilitydistribution.NGramsProbabilityDistribution;
+import token.probabilitydistribution.AbstractFreqsProbabilityDistribution;
 
-public class Jaccard extends AbstractProbabilityDistributionSimilarity 
+public class Jaccard extends AbstractFreqsProbabilityDistributionSimilarity 
 {
 	public Jaccard()
 	{
 		super();
 	}
 	
-	public Jaccard(NGramsProbabilityDistribution first)
+	public Jaccard(AbstractFreqsProbabilityDistribution first)
 	{
 		super(first);
 	}
 	
-	public Jaccard(NGramsProbabilityDistribution first, NGramsProbabilityDistribution second)
+	public Jaccard(AbstractFreqsProbabilityDistribution first, AbstractFreqsProbabilityDistribution second)
 	{
 		super(first, second);
 	}

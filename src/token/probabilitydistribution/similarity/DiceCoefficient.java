@@ -1,8 +1,7 @@
 package token.probabilitydistribution.similarity;
 
-public class DiceCoefficient extends AbstractProbabilityDistributionSimilarity 
+public class DiceCoefficient extends AbstractFreqsProbabilityDistributionSimilarity 
 {
-
 	/**
 	 * Calcul du score du Dice Coefficient entre deux distributions. Cette version ne prend pas juste présent ou absent mais utilise les fréquences.
 	 * On suppose que les deux distributions ont été définie précédemment.<br/>

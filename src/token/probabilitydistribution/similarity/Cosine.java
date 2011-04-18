@@ -2,7 +2,7 @@ package token.probabilitydistribution.similarity;
 
 import java.util.HashMap;
 
-public class Cosine extends AbstractProbabilityDistributionSimilarity 
+public class Cosine extends AbstractFreqsProbabilityDistributionSimilarity 
 {
 	/**
 	 * Calcul du score de similarité cosinus entre deux distributions.

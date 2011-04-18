@@ -1,23 +1,20 @@
 package token.probabilitydistribution.similarity;
-import token.probabilitydistribution.ProbabilityDistribution;
 
-/**
- * Les classes implémentant cette inferface ont pour but de calculer la similarité de deux distributions de ngrammes.
- * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
- */
-public interface ProbabilityDistributionSimilarityInterface extends ProbabilityDistributionSimilaritySuperInterface
+import token.probabilitydistribution.AbstractFreqsProbabilityDistribution;
+
+public interface FreqsProbabilityDistributionSimilarityInterface extends ProbabilityDistributionSimilaritySuperInterface
 {
 	/**
 	 * Permet de changer la première distribution de probabilités.
 	 * @param first
 	 */
-	public void setFirst(ProbabilityDistribution first);
+	public void setFirst(AbstractFreqsProbabilityDistribution first);
 
 	/**
 	 * Permet de changer la seconde distribution de probabilités.
 	 * @param second
 	 */
-	public void setSecond(ProbabilityDistribution second);
+	public void setSecond(AbstractFreqsProbabilityDistribution second);
 	
 	/**
 	 * Calcul du score de similarité entre deux distributions.
@@ -26,7 +23,7 @@ public interface ProbabilityDistributionSimilarityInterface extends ProbabilityD
 	 * @param second Seconde distribution
 	 * @return Score de similarité
 	 */
-	public Double similarity(ProbabilityDistribution first, ProbabilityDistribution second);
+	public Double similarity(AbstractFreqsProbabilityDistribution first, AbstractFreqsProbabilityDistribution second);
 	
 	/**
 	 * Calcul du score de similarité entre deux distributions.
@@ -34,5 +31,5 @@ public interface ProbabilityDistributionSimilarityInterface extends ProbabilityD
 	 * @param second Seconde distribution
 	 * @return Score de similarité
 	 */
-	public Double similarity(ProbabilityDistribution second);
+	public Double similarity(AbstractFreqsProbabilityDistribution second);
 }

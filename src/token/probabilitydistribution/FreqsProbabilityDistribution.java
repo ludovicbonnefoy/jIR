@@ -4,17 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Set;
 
-public interface ProbabilityDistributionInterface 
+public interface FreqsProbabilityDistribution extends ProbabilityDistribution
 {
-	/**
-	 * Permet de récupérer la probabilité d'apparition du terme.
-	 * @param term Terme dont on veux la probabilité d'apparition.
-	 * @return Probabilité d'apparition du terme.
-	 */
-	public Double get(String term);
-	
 	/**
 	 * Ajout d'un nombre d'occurence d'un terme.
 	 * @param term Terme dont on veut rajouter des occurences.
@@ -43,18 +35,6 @@ public interface ProbabilityDistributionInterface
 	 */
 	public void put(HashMap<String, Long> terms);
 
-	/**
-	 * Retourne true si le terme est présent.
-	 * @param term Terme recherché.
-	 * @return true si le terme est présent.
-	 */
-	public boolean containsKey(String term);
-
-	/**
-	 * Permet de récupérer la liste des termes présents.
-	 * @return Liste des termes présents.
-	 */
-	public Set<String> keySet();
 
 	/**
 	 * Renvoie l'ensemble des termes présents avec leur nombre d'occurences.
@@ -72,13 +52,7 @@ public interface ProbabilityDistributionInterface
 	 * Ajoute les termes et leur nombre d'occurences d'une distribution à l'instance.
 	 * @param pd Distribution de laquelle on va récupérer des termes et leur nombre d'occurences et les ajouter à l'instance.
 	 */
-	public void merge(ProbabilityDistributionInterface pd);
-	
-	/**
-	 * Sérialise l'objet au chemin indiqué (chemin complet = contenant le nom).
-	 * @param path Chemin complet où doit être stocké l'objet sérialisé.
-	 */
-	public void serialize(String path);
+	public void merge(FreqsProbabilityDistribution pd);
 	
 	/**
 	 * Construction à partir d'un fichier ne contenant des fréquences.

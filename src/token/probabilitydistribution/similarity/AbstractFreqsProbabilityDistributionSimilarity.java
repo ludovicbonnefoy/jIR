@@ -1,22 +1,17 @@
 package token.probabilitydistribution.similarity;
 
+import token.probabilitydistribution.AbstractFreqsProbabilityDistribution;
 import token.probabilitydistribution.NGramsProbabilityDistribution;
-import token.probabilitydistribution.ProbabilityDistribution;
 
-/**
- * Classe abstraite implémentant la quasi-totalité des méthodes de l'interface correspondante.
- * La seule méthode non-implémentée est celle du calcul proprement dit.
- * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
- */
-public abstract class AbstractProbabilityDistributionSimilarity implements ProbabilityDistributionSimilarityInterface 
+public abstract class AbstractFreqsProbabilityDistributionSimilarity implements FreqsProbabilityDistributionSimilarityInterface
 {
 	/** Distributions de ngrammes qui vont être comparés */
-	protected ProbabilityDistribution _first, _second;
+	protected  AbstractFreqsProbabilityDistribution _first, _second;
 	
 	/**
 	 * Initialisation de l'instance avec deux distributions vides.
 	 */
-	public AbstractProbabilityDistributionSimilarity()
+	public AbstractFreqsProbabilityDistributionSimilarity()
 	{
 		_first = new NGramsProbabilityDistribution();
 		_second = new NGramsProbabilityDistribution();
@@ -26,7 +21,7 @@ public abstract class AbstractProbabilityDistributionSimilarity implements Proba
 	 * Initialisation de l'instance avec une première distribution non vide.
 	 * @param first Distribution non vide.
 	 */
-	public AbstractProbabilityDistributionSimilarity(ProbabilityDistribution first)
+	public AbstractFreqsProbabilityDistributionSimilarity(AbstractFreqsProbabilityDistribution first)
 	{
 		_first = first;
 		_second = new NGramsProbabilityDistribution();
@@ -37,7 +32,7 @@ public abstract class AbstractProbabilityDistributionSimilarity implements Proba
 	 * @param first Première distribution.
 	 * @param second Seconde distribution.
 	 */
-	public AbstractProbabilityDistributionSimilarity(ProbabilityDistribution first, ProbabilityDistribution second)
+	public AbstractFreqsProbabilityDistributionSimilarity(AbstractFreqsProbabilityDistribution first, AbstractFreqsProbabilityDistribution second)
 	{
 		_first = first;
 		_second = second;
@@ -47,7 +42,7 @@ public abstract class AbstractProbabilityDistributionSimilarity implements Proba
 	 * Permet de définir la première des deux distributions qui vont être comparées.
 	 * @param first Distribution.
 	 */
-	public void setFirst(ProbabilityDistribution first)
+	public void setFirst(AbstractFreqsProbabilityDistribution first)
 	{
 		_first = first;
 	}
@@ -56,12 +51,12 @@ public abstract class AbstractProbabilityDistributionSimilarity implements Proba
 	 * Permet de définir la seconde des deux distributions qui vont être comparées.
 	 * @param second Distribution. 
 	 */
-	public void setSecond(ProbabilityDistribution second)
+	public void setSecond(AbstractFreqsProbabilityDistribution second)
 	{
 		_second = second;
 	}
 
-	public Double similarity(ProbabilityDistribution first, ProbabilityDistribution second) 
+	public Double similarity(AbstractFreqsProbabilityDistribution first, AbstractFreqsProbabilityDistribution second) 
 	{
 		_first = first;
 		_second = second;
@@ -69,7 +64,7 @@ public abstract class AbstractProbabilityDistributionSimilarity implements Proba
 		return similarity();
 	}
 
-	public Double similarity(ProbabilityDistribution second) 
+	public Double similarity(AbstractFreqsProbabilityDistribution second) 
 	{
 		_second = second;
 		return similarity();

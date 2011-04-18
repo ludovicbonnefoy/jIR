@@ -26,7 +26,7 @@ import web.util.html.HTML2Text;
  * Propose des calculs de ngrammes sur divers type de document et/ou corpus,  
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
-public class NGramsProbabilityDistribution extends ProbabilityDistribution
+public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistribution
 {
 	private static final long serialVersionUID = -4539352062797597509L;
 

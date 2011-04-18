@@ -8,13 +8,13 @@ import util.GetProperties;
  * La similarité a utiliser est recherchée dans un fichier properties. Dans le cas où rien n'est trouvé, une similarité par défaut est utilisée.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
  */
-public class ProbabilityDistributionSimilarityFactory 
+public class FreqsProbabilityDistributionSimilarityFactory 
 {
 	/**
 	 * Retourne un outil de mesure de la similarité entre deux distributions.
 	 * @return Outil de mesure de la similarité entre deux distributions.
 	 */
-	public static ProbabilityDistributionSimilarityInterface get()
+	public static ProbabilityDistributionSimilaritySuperInterface get()
 	{
 		if(GetProperties.getInstance().containsKey("probabilityDistributionSimilarity"))
 		{
@@ -27,8 +27,15 @@ public class ProbabilityDistributionSimilarityFactory
 				return new JensenShannon();
 			else if (similarity.equals("jensenShannonUnion"))
 				return new JensenShannonUnion();
+			else if (similarity.equals("cosine"))
+				return new Cosine();
+			else if (similarity.equals("jaccard"))
+				return new Jaccard();
+			else if (similarity.equals("dice"))
+				return new DiceCoefficient();
 		}
 
 		return new KullbackLeibler();
 	}
+
 }
