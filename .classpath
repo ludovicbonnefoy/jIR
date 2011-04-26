@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="dist/lib/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/mallet-deps.jar"/>
 	<classpathentry kind="lib" path="lib/mallet.jar"/>
+	<classpathentry kind="lib" path="lib/gson-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/google-ajax-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

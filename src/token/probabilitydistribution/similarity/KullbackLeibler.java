@@ -19,6 +19,6 @@ public class KullbackLeibler extends AbstractProbabilityDistributionSimilarity
 		for(String key : _first.keySet()) //pour chaque élément de la première distribution
 			result += _first.get(key) * Math.log(_first.get(key) / _second.get(key)); //mise à jour du score
 
-		return result;
+		return 1./result;
 	}
 }

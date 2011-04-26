@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -127,6 +128,17 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 			put(term, terms.get(term));
 	}
 
+	public void delete(String term)
+	{
+		_freqs.remove(term);
+	}
+	
+	public void delete(ArrayList<String> terms)
+	{
+		for(String term : terms)
+			_freqs.remove(term);
+	}
+	
 	/**
 	 * Retourne true si le terme est présent.
 	 * @param term Terme recherché.

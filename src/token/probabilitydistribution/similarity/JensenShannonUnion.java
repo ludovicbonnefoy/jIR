@@ -20,6 +20,6 @@ public class JensenShannonUnion extends AbstractProbabilityDistributionSimilarit
 			result += (pi * Math.log(pi / mi))/2 + (qi * Math.log(qi / mi))/2;
 		}
 
-		return result;
+		return 1./result;
 	}
 }

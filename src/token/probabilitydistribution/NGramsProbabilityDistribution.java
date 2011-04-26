@@ -56,14 +56,13 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 	 * Récupération d'une distribution sérialisée.
 	 * @param serializedNGramsProbabilityDistribution Fichier contenant la distribution sérialisée.
 	 */
-	@SuppressWarnings("unchecked")
 	public NGramsProbabilityDistribution(File serializedNGramsProbabilityDistribution)
 	{
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serializedNGramsProbabilityDistribution));
 			NGramsProbabilityDistribution tmp = (NGramsProbabilityDistribution)(ois.readObject());
 
-			_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
+			_freqs = tmp.getFrequenciesMap();
 			_total = tmp.getVocabularySize();
 			_n = tmp.getN();
 		} catch (FileNotFoundException e) {

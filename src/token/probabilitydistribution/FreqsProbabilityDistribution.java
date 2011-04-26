@@ -3,6 +3,7 @@ package token.probabilitydistribution;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface FreqsProbabilityDistribution extends ProbabilityDistribution
@@ -34,8 +35,19 @@ public interface FreqsProbabilityDistribution extends ProbabilityDistribution
 	 * @param terms Association terme/nombre d'occurences.
 	 */
 	public void put(HashMap<String, Long> terms);
+	
+	/**
+	 * Supprime une entrée.
+	 * @param term Terme à supprimer.
+	 */
+	public void delete(String term);
 
-
+	/**
+	 * Supprime plusieurs entrées.
+	 * @param terms Termes à supprimer.
+	 */
+	public void delete(ArrayList<String> terms);
+	
 	/**
 	 * Renvoie l'ensemble des termes présents avec leur nombre d'occurences.
 	 * @return Ensemble des couples termes/nombre d'occurences.

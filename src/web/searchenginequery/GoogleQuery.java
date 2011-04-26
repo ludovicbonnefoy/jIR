@@ -1,14 +1,16 @@
 package web.searchenginequery;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import util.GetProperties;
 
 /**
  * Permet d'interroger le moteur de recherche Google.
@@ -22,87 +24,151 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 	}
 
 	/**
-	 * Interrogation de Google via son API
+	 * Interrogation de Google via Lynx pour éviter les limitations
 	 * Attention totalHits correct si totalHits<count, sinon totalHits = count..
 	 * @param query Requête.
 	 * @param count Nombre de résultats souhaités.
 	 */
 	public void query(String query, int count)
 	{
-		query = query.replaceAll("[^\\p{ASCII}]", "");
-
-		URL urlR = null;
 		_totalHits = new Long(0);
-
+		_urls = new ArrayList<String>();
+		_snippets = new ArrayList<String>();
+		
 		try {
-			// Convert spaces to +, etc. to make a valid URL
-			query = URLEncoder.encode(query, "UTF-8");
+			Runtime runtime = Runtime.getRuntime();
+			String[] parameters = new String[]{GetProperties.getInstance().getProperty("lynx"),"-dump","http://www.google.com/search?source=ig&hl=en&num="+count+"&q=%22"+query.replaceAll(" ", "+")+"%22"};
+			Process process = runtime.exec(parameters);
+			//lecture de la sortie de lynx
+			BufferedReader brTokens = new BufferedReader(new InputStreamReader(process.getInputStream(),"UTF-8"));
+			String tokenLine = new String();
 
-			_urls = new ArrayList<String>(0);
-			_snippets = new ArrayList<String>(0);
-			_totalHits = new Long(0);
+			ArrayList<Integer> links = new ArrayList<Integer>();
+			ArrayList<String> tmpSnippet = null;
 
-			Integer nbrLoops = count/8;
-			if(!(new Integer(count%8)).equals(0))
-				++nbrLoops;
+			int phase = 0;
+			while((tokenLine = brTokens.readLine()) != null) //pour chaque token
+			{
+				tokenLine = tokenLine.trim();
+				if(tokenLine.equals(""))
+					continue;
 
-			int nbr = 0;
-			for(Integer i = 0; i <= nbrLoops ; ++i)//Google ne permet de récupérer que 8 résultats à la fois
-			{  
-				StringBuffer buffer = new StringBuffer();
-
-				urlR = new URL("http://ajax.googleapis.com/ajax/services/search/web?start="+ (i*8) + "&hl=en&rsz=large&v=1.0&q=" + query);
-				URLConnection con = urlR.openConnection ();
-
-				InputStreamReader isr = new InputStreamReader(con.getInputStream());
-				Reader in = new BufferedReader(isr);
-				int ch;
-				while ((ch = in.read()) > -1)
+				if(phase==0) //entete
 				{
-					buffer.append((char)ch);
+					if(tokenLine.contains("About") && tokenLine.contains("results"))
+						_totalHits = new Long(tokenLine.substring(tokenLine.indexOf("About")+6, tokenLine.indexOf("results")).replaceAll(",", "").trim());
+					else if(tokenLine.equals("Search Results"))
+					{
+						if(_totalHits == 0)
+							break;
+						phase = 1;
+					}
 				}
-
-
-				Pattern p = Pattern.compile("\"responseData\": null");
-				Matcher m = p.matcher(buffer.toString());
-				if(m.find())
+				else if(phase==1) //numéros liens et snippets
 				{
-					_totalHits = new Long(i*8);
-					break;
+					if(tokenLine.contains("* Everything"))
+						phase = 2;
+					try
+					{
+						Pattern p = Pattern.compile("[0-9]+\\.");
+						Matcher m = p.matcher(tokenLine);
+						if(m.find() && m.start() == 0)
+						{
+							if(tmpSnippet!=null)
+							{
+								String snippet = "";
+								for(int i = 0; i < tmpSnippet.size()-2; i++) //-2 car la dernière phrase ne fait pas partie du snippet mais est un bout de l'adresse web
+									snippet += " "+tmpSnippet.get(i);
+
+								_snippets.add(snippet.trim());
+							}
+							tmpSnippet = new ArrayList<String>();
+
+							String title = tokenLine.substring(m.end());
+							Pattern p2 = Pattern.compile("\\[[0-9]+\\]");
+							m = p2.matcher(title);
+							if(m.find())
+								links.add(new Integer(title.substring(m.start()+1, m.end()-1)));
+						}
+						else
+							tmpSnippet.add(tokenLine);
+					}catch(PatternSyntaxException pse){
+						pse.printStackTrace();
+					}
 				}
-
-				String url = buffer.toString();
-
-				Pattern purl = Pattern.compile("unescapedUrl\":\"[^\"]+");
-				Matcher murl = purl.matcher(url);
-
-				Pattern psnippet = Pattern.compile("content\":\"[^\"]+");
-				Matcher msnippet = psnippet.matcher(url);
-
-				while(murl.find())
+				else if(phase == 2) //pĥase 2: pied de page
 				{
-					if(nbr >= count)
-						break;
-
-					String tmp = url.substring(murl.start(),murl.end()).replaceAll("unescapedUrl\":\"","").replaceAll(".+/","");
-					if(tmp.contains(".") && !tmp.contains("?"))//si ? alors page web
-						if(!(tmp.contains("htm") || tmp.contains("php") || tmp.contains("aspx")))
-							continue;
-
-					_urls.add(url.substring(murl.start(),murl.end()).replaceAll("unescapedUrl\":\"",""));
-
-					//pour les snippets essayer de faire décodage pour les caractères spéciaux
-					msnippet.find();
-					_snippets.add(url.substring(msnippet.start(),msnippet.end()).replaceAll("content\":\"",""));
-
-					nbr++;
-					_totalHits++; //bancale..
+					if(tokenLine.equals("Références"))
+						phase = 3;
+				}
+				else //phase 3: numéro lien => lien
+				{
+					String[] elements = tokenLine.split(" ");
+					if(links.contains(new Integer(elements[0].replaceFirst("\\.", ""))))
+						_urls.add(elements[1]);
 				}
 			}
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			System.err.println("Google.query ERROR. URL WAS " + urlR);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
+	//	/**
+	//	 * Interrogation de Google via son API
+	//	 * Attention totalHits correct si totalHits<count, sinon totalHits = count..
+	//	 * @param query Requête.
+	//	 * @param count Nombre de résultats souhaités.
+	//	 */
+	//	public void query(String query, int count)
+	//	{
+	//		query = query.replaceAll("[^\\p{ASCII}]", "");
+	//
+	//		// Convert spaces to +, etc. to make a valid URL
+	//		try {
+	//			query = URLEncoder.encode(query, "UTF-8");
+	//		} catch (UnsupportedEncodingException e) {
+	//			e.printStackTrace();
+	//		}
+	//
+	//		_urls = new ArrayList<String>(0);
+	//		_snippets = new ArrayList<String>(0);
+	//		_totalHits = new Long(0);
+	//
+	//		GoogleSearchQueryFactory factory = GoogleSearchQueryFactory.newInstance("ABQIAAAAN01EmeM_E-n3GDBY_wnMWxQjY9LYFWCMM67ypO_BTNFHtzJ1KqBTMJIc0hiI0cTpdMOnvC4H9mEXc9s");
+	//		WebSearchQuery wsquery = factory.newWebSearchQuery();
+	//		wsquery.withQuery(query);
+	//
+	//		for(int i = 0; i < count; i+=4)
+	//		{
+	//			System.out.println(i);
+	//			PagedList<WebResult> response = wsquery.withStartIndex(i).list();
+	//			
+	//			if(i==0)
+	//				_totalHits = response.getEstimatedResultCount();
+	//
+	//			for(int j = 0; j < 4; j++)
+	//			{
+	//				WebResult result = response.get(j);
+	//				
+	//				if(i+j+1 > count)
+	//					break;
+	//				
+	//				_urls.add(result.getUrl());
+	//				_snippets.add(result.getContent());
+	//			}
+	//		}
+	//	}
+
+	public static void main(String[] args) 
+	{
+		GetProperties properties = GetProperties.getInstance();
+		properties.init("properties.properties");
+
+		GoogleQuery qg = new GoogleQuery();
+		qg.query("ludovic bonnefoy", 100);
+	}
 }
