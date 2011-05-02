@@ -66,10 +66,14 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 				}
 				else if(phase==1) //numéros liens et snippets
 				{
-					if(tokenLine.contains("* Everything"))
+					if(tokenLine.contains("* Everything") || links.size() >= count)
+					{
 						phase = 2;
+						continue;
+					}
 					try
 					{
+						
 						Pattern p = Pattern.compile("[0-9]+\\.");
 						Matcher m = p.matcher(tokenLine);
 						if(m.find() && m.start() == 0)
@@ -169,6 +173,6 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 		properties.init("properties.properties");
 
 		GoogleQuery qg = new GoogleQuery();
-		qg.query("ludovic bonnefoy", 100);
+		qg.query("ludovic bonnefoy", 1);
 	}
 }

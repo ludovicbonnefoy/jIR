@@ -79,6 +79,8 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 				_total = tmp.getVocabularySize();
 				_mu = new Double(2000); 
 			}
+			
+			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -65,6 +65,7 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 			_freqs = tmp.getFrequenciesMap();
 			_total = tmp.getVocabularySize();
 			_n = tmp.getN();
+			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
