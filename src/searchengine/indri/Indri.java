@@ -152,6 +152,7 @@ public class Indri
             parameters.println("<parameters>");
             parameters.println("\t<index>"+_indexPath+"</index>");
             parameters.println("\t<memory>"+_memory+"</memory>");
+            parameters.println("<rule>method:d,mu:2500</rule>");
             parameters.println("\t<corpus>");
             parameters.println("\t\t<path>"+_corpusPath+"</path>");
             parameters.println("\t\t<class>"+_corpusClass+"</class>");
@@ -175,6 +176,8 @@ public class Indri
                 for(int i=0; i<passagesFiles.length; i++) 
                     passagesFiles[i].delete(); 
             } 
+            else
+            	passagesDirectory.mkdir();
 
             //Indexation
             System.err.println("Indexation");
@@ -186,9 +189,12 @@ public class Indri
             while(brTokens.readLine() != null);
             process.waitFor();
             
+            brTokens.close();
+            process.destroy();
             System.err.println("Indexation terminée");
         }catch(Exception e){
-            System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
         }
     }
 
@@ -240,6 +246,8 @@ public class Indri
                 
                 documents.put(res[1],new Double(res[0])); //insertion dans la map de résultat
             }
+            br.close();
+            process.destroy();
         }catch(Exception e){
             System.err.println(e);
         }
@@ -308,8 +316,11 @@ public class Indri
                 getPassageProcess.waitFor();
                 passages.add(new PassageIndri(new Double(res[0]),res[1],passage)); //ajout du passage dans la liste
             }
+            br.close();
+            process.destroy();
         }catch(Exception e){
-            System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
         }
         return passages;
     }

@@ -18,11 +18,13 @@ public class WgetWebPageDownloader extends AbstractExternalWebPageDownloader
 	public void download(String filePath, String url) throws InterruptedException,IOException
 	{
         Runtime runtime = Runtime.getRuntime();
-		Process process = runtime.exec(new String[]{_executablePath,"-O",filePath,"-T","5","-t","2",url}); //récupération de la page web
+		Process process = runtime.exec(new String[]{_executablePath,"-O",filePath,"--user-agent","Mozilla/5.0X11Linuxi686rv7.0.1Gecko/20100101Firefox/7.0.1","-T","5","-t","2",url}); //récupération de la page web
     	
 		BufferedReader brP = new BufferedReader(new InputStreamReader(process.getErrorStream()));
     	while(brP.readLine() != null);
     	process.waitFor();
+    	brP.close();
+    	process.destroy();
 	}
 
 }

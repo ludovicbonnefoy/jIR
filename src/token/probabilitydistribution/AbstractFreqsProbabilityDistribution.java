@@ -58,6 +58,7 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 
 			_freqs = (HashMap<String, Long>) tmp.getFrequenciesMap().clone();
 			_total = tmp.getVocabularySize();
+			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -244,7 +245,11 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 		String line;
 		while((line = lines.readLine()) != null) //pour chaque token
 		{
-			String[] elements = line.split(" "); //on récupère les infos
+			String[] elements;
+			if(line.contains(" "))
+				elements = line.split(" "); //on récupère les infos
+			else
+				elements = line.split("\t"); //on récupère les infos
 
 			String term = "";
 			for(int i = 0; i < elements.length-2; i++)
@@ -253,5 +258,6 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 			_freqs.put(term, new Long(elements[elements.length-1])); 
 			_total += new Long(elements[elements.length-1]);
 		}
+		lines.close();
 	}
 }

@@ -49,7 +49,8 @@ public class GetProperties extends Properties
         {
             load(new FileInputStream(path)); //chargement
         }catch(Exception e){
-            System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
         }
     }
 }

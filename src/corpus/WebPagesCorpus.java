@@ -34,6 +34,9 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 	{
 		try
 		{
+			if(!(url.endsWith(".pdf") || url.endsWith(".rdf") || url.endsWith(".doc") || url.endsWith(".ppt")))
+				return false;
+			
 			AbstractExternalWebPageDownloader webPagesDownloader = ExternalWebPageDownloaderFactory.get(GetProperties.getInstance().getProperty("externalWebPagesDownloaderPath"));
 			webPagesDownloader.download(_directory+"/"+_fileNumber,url);
 

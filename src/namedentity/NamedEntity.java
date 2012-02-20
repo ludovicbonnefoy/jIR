@@ -137,6 +137,7 @@ public class NamedEntity implements Serializable
 	        }
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	        
 		return _canonicalForm;
@@ -167,7 +168,6 @@ public class NamedEntity implements Serializable
 
 				_namedEntity = suggestionList.item(0).getTextContent();
 			}
-
 		}catch(ParserConfigurationException pce){
 			System.err.println("Erreur de configuration du parseur DOM");
 			System.err.println("lors de l'appel à fabrique.newDocumentBuilder();");

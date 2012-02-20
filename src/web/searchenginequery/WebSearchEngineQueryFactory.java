@@ -19,8 +19,15 @@ public class WebSearchEngineQueryFactory
 				return new BossQuery();
 			else if (engine.equals("google"))
 				return new GoogleQuery();
+			else if(engine.equals("bing"))
+				return new BingQuery();
 		}
 
-		return new BossQuery();
+		return new BingQuery();
+	}
+	
+	public static AbstractWebSearchEngineQuery get(String market)
+	{
+		return new BingQuery(market);
 	}
 }

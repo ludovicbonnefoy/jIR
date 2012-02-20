@@ -97,11 +97,11 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 		_freqs = new HashMap<String, Long>();
 		_total = new Long(0);
 		
-		BufferedReader unigrams = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		BufferedReader unigrams = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
 		String unigram;
 		while((unigram = unigrams.readLine()) != null) //pour chaque token
 		{
-			String[] elements = unigram.split(" "); //on récupère les infos
+			String[] elements = unigram.split("\t"); //on récupère les infos
 			
 			if(elements.length != n+1)
 				throw new RuntimeException("Termes dans le fichier ne correspondent pas à des "+n+"-grammes");
@@ -114,6 +114,7 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 			_freqs.put(ngram, new Long(elements[i])); 
 			_total += new Long(elements[i]);
 		}
+		unigrams.close();
 		_n = n;
 	}
 
@@ -373,6 +374,7 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromWarc"), n);  //retourne le résultat de la fonction qui gère les fichier

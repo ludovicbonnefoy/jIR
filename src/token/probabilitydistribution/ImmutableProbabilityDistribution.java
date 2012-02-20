@@ -47,6 +47,7 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 			ImmutableProbabilityDistribution tmp = (ImmutableProbabilityDistribution)(ois.readObject());
 
 			_probas = tmp.getProbabilityMap();
+			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

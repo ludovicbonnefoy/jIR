@@ -129,7 +129,8 @@ public class ProcessFeatures
                 analyseLinks(webSite,domain); //calcul de features sur les URLs sortantes
             
         }catch(Exception e){
-            System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
         }
     }
 
@@ -206,6 +207,7 @@ public class ProcessFeatures
                     nbrSentenceWord = new Double(0); //remise à zéro du compte de mots pour la nouvelle phrase
                 }
             }
+            brTokens.close();
 
             //au cas où le texte ne se termine brusquement (sans ponctuation) Pour prendre en compte la dernière phrase
             //On considère alors que le texte constitue une phrase.
@@ -237,6 +239,7 @@ public class ProcessFeatures
             _featuresCount.put("wordLengthAverage",wordLengthAverage/nbrWord); //division par le nombre de mots
 
             process.waitFor();
+            process.destroy();
         }catch(Exception e){}
         catch (StackOverflowError sofe) {}
 }
@@ -256,7 +259,8 @@ private void processHTMLFeatures(String filename)
         
         exploreDomTree(rootElement); //exploration de l'arbre dom et récupération des features
     }catch (Exception e){
-        System.err.println(e.getMessage());
+		System.err.println(e.getMessage());
+		e.printStackTrace();
     }
 }
 

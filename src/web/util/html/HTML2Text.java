@@ -22,6 +22,7 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
 {
 	/** Contient le texte du document */
     StringBuffer _text;
+    boolean _breakflow;
     
     /** Permet de ne pas prendre en compte le texte de certaines balises et de prendre en compte leur imbrication */
     Integer interdiction;
@@ -42,10 +43,12 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
         interdiction = 0;
         
         _text = new StringBuffer();
+        _breakflow = true;
         //init
         ParserDelegator delegator = new ParserDelegator();
         // the third parameter is TRUE to ignore charset directive
         delegator.parse(in, this, Boolean.TRUE); //traitement
+        in.close();
     }
 
     /**
@@ -53,10 +56,13 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
      */
     public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos)
     {
-        if(t.breaksFlow()) //gestion des retours à la ligne pour certains type de tags (p, ...)
-            _text.append("\n");
+        if(t.breaksFlow() && !_breakflow) //gestion des retours à la ligne pour certains type de tags (p, ...)
+        {
+            _text.append(".\n");
+            _breakflow = true;
+        }
 
-        if(t.equals(HTML.Tag.STYLE) || t.equals(HTML.Tag.HEAD) || t.equals(HTML.Tag.SCRIPT))// || t.equals(HTML.Tag.TABLE)) //ne permet de signaler que l'on ne veut pas le texte de ces balises
+        if(t.equals(HTML.Tag.STYLE) || t.equals(HTML.Tag.HEAD) || t.equals(HTML.Tag.SCRIPT) || t.equals(HTML.Tag.SELECT))// || t.equals(HTML.Tag.TABLE)) //ne permet de signaler que l'on ne veut pas le texte de ces balises
             ++interdiction;
     }
 
@@ -65,7 +71,7 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
      */
     public void handleEndTag(HTML.Tag t,  int pos)
     {
-        if(t.equals(HTML.Tag.STYLE) || t.equals(HTML.Tag.HEAD) || t.equals(HTML.Tag.SCRIPT))// || t.equals(HTML.Tag.TABLE)) //met à jour le compteur
+        if(t.equals(HTML.Tag.STYLE) || t.equals(HTML.Tag.HEAD) || t.equals(HTML.Tag.SCRIPT) || t.equals(HTML.Tag.SELECT))// || t.equals(HTML.Tag.TABLE)) //met à jour le compteur
             --interdiction;
     }
 
@@ -75,7 +81,10 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
     public void handleText(char[] text, int pos)
     {
         if(interdiction <= 0) // Si on n'est pas dans une balise pour laquelle on ne veut pas conserver le texte
-            _text.append(text); //ajout de la portion de texte à la suite de celui précédemment conservé.
+        {
+            _text.append(" ").append(text); //ajout de la portion de texte à la suite de celui précédemment conservé.
+            _breakflow = false;
+        }
     }
 
     /**
@@ -84,7 +93,9 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
      */
     public String getCleanText()
     {
-        return HTMLEntities.decode(getText()).replaceAll("<","").replaceAll(">","").replaceAll("\n+","\n");
+    	return HTMLEntities.decode(getText()).replaceAll("(<[^>]*>)|(script[^<>]*>)","").replaceAll("\n+","\n").trim();
+        //return HTMLEntities.decode(getText()).replaceAll("<[^>]*>","").replaceAll("\n+","\n");
+//        return HTMLEntities.decode(getText()).replaceAll("<","").replaceAll(">","").replaceAll("\n+","\n");
     }
 
 
@@ -106,12 +117,12 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
     {
         try {
             // the HTML to convert
-            FileReader in = new FileReader(args[0]);            
+            FileReader in = new FileReader("0");            
             HTML2Text parser = new HTML2Text();
            	parser.parse(in);
             in.close();
 
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(args[1])));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("out")));
             //out.println("<Text>");
             out.println(parser.getCleanText());
             //out.println("</Text>");
@@ -121,7 +132,8 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
         	System.out.println("tttt");
         }
         catch (Exception e) {
-        	System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
     }
 }

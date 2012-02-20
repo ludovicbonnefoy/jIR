@@ -430,7 +430,8 @@ public class WebPagesGenreClassification implements java.io.Serializable
         	Runtime.getRuntime().exec(new String[]{GetProperties.getInstance().getProperty("wget"),"-O",GetProperties.getInstance().getProperty("tmpDirectory")+"/page","-T","5","-t","2",url}).waitFor(); //récupération de la page web
         	return process(new File(GetProperties.getInstance().getProperty("tmpDirectory") + "/page")); //process
         }catch(Exception e){
-        	System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
         }
         
         return null;
@@ -543,7 +544,8 @@ public class WebPagesGenreClassification implements java.io.Serializable
 	    		oos.close();
 	    	}
 	    	catch (java.io.IOException e) {
-	    		e.getMessage();
+				System.err.println(e.getMessage());
+				e.printStackTrace();
 	    	}
 		}
 		else
@@ -555,7 +557,8 @@ public class WebPagesGenreClassification implements java.io.Serializable
 	    		
 	    		wpgc = (WebPagesGenreClassification)(ois.readObject());
 	    	}catch(Exception e){
-	    		e.getMessage();
+				System.err.println(e.getMessage());
+				e.printStackTrace();
 	    	}
 		}
 		
@@ -567,6 +570,7 @@ public class WebPagesGenreClassification implements java.io.Serializable
 			pw.close();
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}*/
     	
 		//System.err.println("Validation");

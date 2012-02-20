@@ -112,6 +112,8 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 						_urls.add(elements[1]);
 				}
 			}
+			brTokens.close();
+			process.destroy();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {

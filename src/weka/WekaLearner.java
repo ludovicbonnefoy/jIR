@@ -201,7 +201,8 @@ public class WekaLearner implements Serializable {
 			m_Scheme = pi_Classifier;
 			m_Scheme.buildClassifier(m_TrainingSet);
 		} catch (Exception e) {
-		  	System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -215,7 +216,8 @@ public class WekaLearner implements Serializable {
 			m_ClusterScheme = pi_Clusterer;
 			m_ClusterScheme.buildClusterer(m_TrainingSet);			
 		} catch (Exception e) {
-		  	System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -231,6 +233,7 @@ public class WekaLearner implements Serializable {
 			evaluation.crossValidateModel(m_Scheme, m_TrainingSet, 10, new Random());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		// which error is the best? depends on the application.
 		return evaluation;
@@ -249,6 +252,7 @@ public class WekaLearner implements Serializable {
 			evaluation.evaluateModel(m_Scheme, m_TestingSet);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		String strSummary = evaluation.toSummaryString();
 		strSummary += "\n\nConfusion Matrix: \n\n";
@@ -287,6 +291,7 @@ public class WekaLearner implements Serializable {
 			out = m_Scheme.classifyInstance(inst);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return out;
 	}
@@ -307,6 +312,7 @@ public class WekaLearner implements Serializable {
 			out = m_ClusterScheme.clusterInstance(inst);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return out;
 	}
@@ -355,6 +361,7 @@ public class WekaLearner implements Serializable {
 		    fDistribution = m_Scheme.distributionForInstance(inst);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return fDistribution;
 	}

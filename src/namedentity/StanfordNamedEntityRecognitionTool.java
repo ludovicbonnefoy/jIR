@@ -10,6 +10,10 @@ import edu.stanford.nlp.ie.crf.CRFClassifier;
  */
 public class StanfordNamedEntityRecognitionTool extends AbstractNamedEntityRecognitionTool 
 {
+	public StanfordNamedEntityRecognitionTool() 
+	{
+	}
+	
 	public String proceed(String text) 
 	{
 		String serializedClassifier = GetProperties.getInstance().getProperty("stanfordClassifierPath");

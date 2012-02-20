@@ -32,6 +32,7 @@ public class BossQuery extends AbstractWebSearchEngineQuery
 			query = URLEncoder.encode(query,"UTF-8"); //Transforme la requête en chaîne valide pour insérer dans une url
 		}catch(Exception e){
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		_urls = new ArrayList<String>(0);
@@ -71,14 +72,19 @@ public class BossQuery extends AbstractWebSearchEngineQuery
 					_snippets.add(snippetsList.item(j).getTextContent().replaceAll("</?b>","")); //récupère le snippet du résultat (i*50)+j et supprime les balises <br>
 					_urls.add(urlsList.item(j).getTextContent());
 				}
-
 			}catch(ParserConfigurationException pce){
+				System.err.println(pce.getMessage());
+				pce.printStackTrace();
 				System.err.println("Erreur de configuration du parseur DOM");
 				System.err.println("lors de l'appel à fabrique.newDocumentBuilder();");
 			}catch(SAXException se){
+				System.err.println(se.getMessage());
+				se.printStackTrace();
 				System.err.println("Erreur lors du parsing du document");
 				System.err.println("lors de l'appel à construteur.parse(xml)");
 			}catch(IOException ioe){
+				System.err.println(ioe.getMessage());
+				ioe.printStackTrace();
 				System.err.println("Erreur d'entrée/sortie");
 				System.err.println("lors de l'appel à construteur.parse(xml)");
 			}

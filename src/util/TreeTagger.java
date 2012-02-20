@@ -74,6 +74,8 @@ public class TreeTagger
                 
                 tokensTag.add(tokenTag);
 			}
+			brTokens.close();
+			process.destroy();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {

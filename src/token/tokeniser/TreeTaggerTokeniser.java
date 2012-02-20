@@ -51,6 +51,8 @@ public class TreeTaggerTokeniser extends AbstractExternalTokeniser
 				String[] elements = tokenLine.replaceAll("\t\t+","\t").split("\t"); //on récupère les infos
 				tokens.add(elements[0]);
 			}
+			brTokens.close();
+			process.destroy();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {

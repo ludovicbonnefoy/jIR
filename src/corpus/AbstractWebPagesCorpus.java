@@ -35,16 +35,15 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	 * Initialisation d'un corpus vide.
 	 * @param directory Dossier où vont être stockés les pages web.
 	 */
-	AbstractWebPagesCorpus(File directory) throws FileNotFoundException
+	protected AbstractWebPagesCorpus(File directory)
 	{
-		if(!directory.exists())
-			throw (new FileNotFoundException("directory not found"));
 		_webPages = new HashMap<String, File>();
 		_fileNumber = 0;
 		_directory = new File(directory.getAbsolutePath());
-
+		if(!_directory.exists())
+			_directory.mkdir();
 	}
-	
+
 	/**
 	 * Construit un corpus comme une copie d'un autre.
 	 * @param wpc Corpus à copier.
@@ -52,8 +51,11 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	public AbstractWebPagesCorpus(AbstractWebPagesCorpus wpc) 
 	{
 		_directory = new File(wpc.getCorpusDirectory().getAbsolutePath());
+		if(!_directory.exists())
+			_directory.mkdir();
+
 		_fileNumber = wpc.getFileNumber();
-		
+
 		_webPages = new HashMap<String, File>();
 		Set<String> urls = wpc.getURLs();
 		for(String url : urls)
@@ -64,20 +66,24 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 	 * Récupère un corpus sérialisé.
 	 * @param corpusPath Chemin complet du corpus sérialisé.
 	 */
-	AbstractWebPagesCorpus(String corpusPath)
+	protected AbstractWebPagesCorpus(String corpusPath)
 	{
+		_webPages = new HashMap<String, File>();
+		
 		try {
-			
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(corpusPath));
-			
+
 			AbstractWebPagesCorpus tmp = (AbstractWebPagesCorpus)(ois.readObject());
 
 			for(String url : tmp.getURLs())
 				_webPages.put(url, tmp.getWebPage(url));
 
 			_directory = tmp.getCorpusDirectory();
+			if(!_directory.exists())
+				_directory.mkdir();
 
 			_fileNumber = tmp.getFileNumber();
+			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -206,7 +212,8 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 			oos.close();
 		}
 		catch (java.io.IOException e) {
-			e.getMessage();
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }
