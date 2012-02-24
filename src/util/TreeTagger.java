@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import token.Token;
+
 public class TreeTagger 
 {
 	private String _executablePath;
@@ -22,7 +24,7 @@ public class TreeTagger
 		_executablePath = executablePath;
 	}
 
-	public ArrayList<ArrayList<String>> tag(String text) 
+	public ArrayList<Token> tag(String text) 
 	{
 		try {
 			PrintWriter pwPassages;
@@ -39,9 +41,9 @@ public class TreeTagger
 		return tag(new File("/tmp/fileToTag"));
 	}
 	
-	public ArrayList<ArrayList<String>> tag(File file) 
+	public ArrayList<Token> tag(File file) 
 	{
-		ArrayList<ArrayList<String>> tokensTag = new ArrayList<ArrayList<String>>();
+		ArrayList<Token> tokens = new ArrayList<Token>();
 		
 		try {
 	        PrintWriter pw = new PrintWriter(new OutputStreamWriter (new FileOutputStream ("/tmp/treetagger.sh"),"UTF-8"));
@@ -67,12 +69,7 @@ public class TreeTagger
                 if(!m.find()) //si on n'en trouve pas on ignore le terme en cours
                     continue;
 
-                ArrayList<String> tokenTag = new ArrayList<String>();
-                tokenTag.add(elements[0]);
-                tokenTag.add(elements[1]);
-                tokenTag.add(elements[2]);
-                
-                tokensTag.add(tokenTag);
+                tokens.add(new Token(elements[0], elements[1],elements[2]));
 			}
 			brTokens.close();
 			process.destroy();
@@ -84,6 +81,6 @@ public class TreeTagger
 			e.printStackTrace();
 		}
 		
-		return tokensTag;
+		return tokens;
 	}
 }

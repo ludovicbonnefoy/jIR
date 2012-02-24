@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
+import token.Token;
 import util.GetProperties;
 import util.TreeTagger;
 import web.util.html.HTML2Text;
@@ -130,22 +131,22 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 		_total = new Long(0);
 
 		TreeTagger treeTagger = new TreeTagger(GetProperties.getInstance().getProperty("treeTaggerPath"));
-		ArrayList<ArrayList<String>> tokensTag = treeTagger.tag(file);
+		ArrayList<Token> tokens = treeTagger.tag(file);
 
 		ArrayList<String> ngramList = new ArrayList<String>();
 
 		for(int i = 0; i < n; i++)
 			ngramList.add("");
 
-		for(ArrayList<String> tokenTag : tokensTag)
+		for(Token token : tokens)
 		{
-			String word = tokenTag.get(0).toLowerCase(); //passage en minuscule
+			String word = token.getToken().toLowerCase(); //passage en minuscule
 
-			if(tokenTag.get(1).equals("CD")) //si on a un chiffre  
+			if(token.getPos().equals("CD")) //si on a un chiffre  
 				word = "@card@"; //on remplace la valeur par @card@, on ne prend pas en compte la valeur
 
-			if(!tokenTag.get(2).equals("<unknown>")) //si on a le lemme
-				word = tokenTag.get(2).toLowerCase(); //on prend le lemme
+			if(!token.getLemme().equals("<unknown>")) //si on a le lemme
+				word = token.getLemme().toLowerCase(); //on prend le lemme
 
 			//on met à jour le n-grammes
 			ngramList.remove(0); //pour cela on supprime le premier élément

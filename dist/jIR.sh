@@ -4,7 +4,7 @@ BASEDIR=`dirname $0`
 BASEDIR=`cd $BASEDIR ; pwd`
 
 CLASSPATH=$BASEDIR/lib/google-ajax-apis.jar:$BASEDIR/lib/gson-1.4.jar:$BASEDIR/lib/jIR.jar:$BASEDIR/lib/jgrapht-jdk1.6.jar:$BASEDIR/lib/mallet-deps.jar:$BASEDIR/lib/mallet.jar:$BASEDIR/lib/nekohtml-1.9.14.jar:$BASEDIR/lib/stanford-ner/stanford-ner-2010-02-24.jar:$BASEDIR/lib/weka-3.6.2.jar:$BASEDIR/lib/xercesImpl-2.9.1.jar:$BASEDIR
-MAINCLASS=token.probabilitydistribution.NGramsProbabilityDistributionDirichletSmoothed
+MAINCLASS=namedentity.LEXp
 
 if [ -z "$JAVA_HOME" ] ; then
 	JAVACMD=java
