@@ -22,6 +22,7 @@ import util.TreeTagger;
  * Adaptation de l'algoritme LEX pour localiser les entités nommées complexes dans du texte.
  * Deux versions sont proposées par les auteurs : LEX and LEX++.
  * Ici la version implémentée est constituée de LEX et une partie des éléments d'ajouts proposés dans LEX++ (d'où le nom LEX+ (LEXp))
+ * L'élément non implémenté de LEX++ est l'attache des suffixes et préfixes tels que décrits dans l'article.
  * @author Ludovic Bonnefoy
  */
 public class LEXp extends AbstractNamedEntityRecognitionTool
@@ -128,7 +129,7 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 		String numberBefore ="", numberAfter = "";
 		Integer entitySize = 0, interSize = 0;
 		Double delta = 0.5; //nom des variables dans l'article
-		Double theta = 0.000002, gamma = 0.000002, phi =0.5; //à régler via un corpus
+		Double theta = 0.000002, gamma = 0.000002 /*, phi =0.5*/; //à régler via un corpus
 		Boolean sentenceBeginning = true; //est-on en train d'étudier le premier mot d'une phrase
 
 		TreeTagger treeTagger = new TreeTagger(GetProperties.getInstance().getProperty("treeTaggerPath"));
@@ -353,5 +354,8 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 		properties.init("properties.properties");
 		LEXp lex = new LEXp();
 		System.out.println(lex.proceed("Hello President Obama and Bill Gates on Playstation 3 will call the Monday the 6 for a new minimum PlayStation 3 Reunion tax rate for individuals making more than $1 million a year to ensure that they pay at least the same percentage of their earnings as other taxpayers, according to administration officials."));
+		
+		StanfordNamedEntityRecognitionTool snert = new StanfordNamedEntityRecognitionTool();
+		System.out.println(snert.proceed("Hello President Obama and Bill Gates on Playstation 3 will call the Monday the 6 for a new minimum PlayStation 3 Reunion tax rate for individuals making more than $1 million a year to ensure that they pay at least the same percentage of their earnings as other taxpayers, according to administration officials."));
 	}
 }

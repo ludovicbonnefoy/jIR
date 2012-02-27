@@ -1,7 +1,6 @@
 package namedentity;
 
 import util.GetProperties;
-import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 
 /**
@@ -17,7 +16,8 @@ public class StanfordNamedEntityRecognitionTool extends AbstractNamedEntityRecog
 	public String proceed(String text) 
 	{
 		String serializedClassifier = GetProperties.getInstance().getProperty("stanfordClassifierPath");
-		AbstractSequenceClassifier classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
+		@SuppressWarnings("rawtypes")
+		CRFClassifier classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
 
 		return classifier.classifyWithInlineXML(text.replaceAll("[ ®©»«¬§¤¨¥ª´?]", " ")); //Classification du texte (privé de certains caractères).
 	}
