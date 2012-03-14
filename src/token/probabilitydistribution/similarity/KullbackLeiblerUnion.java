@@ -28,7 +28,7 @@ public class KullbackLeiblerUnion extends AbstractProbabilityDistributionSimilar
 		for(String key : Vocabulary) //pour chaque élément de la première distribution
 			result += _first.get(key) * Math.log(_first.get(key) / _second.get(key)); //mise à jour du score
 
-		return 1./result;
+		return -result;
 	}
 
 }

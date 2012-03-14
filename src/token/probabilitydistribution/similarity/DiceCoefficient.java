@@ -18,5 +18,4 @@ public class DiceCoefficient extends AbstractFreqsProbabilityDistributionSimilar
 		
 		return dice;
 	}
-
 }
