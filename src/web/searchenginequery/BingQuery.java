@@ -67,7 +67,6 @@ public class BingQuery extends AbstractWebSearchEngineQuery
 				//Extraction des réponses (en XML)
 				DocumentBuilder parseur = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 				Document doc =  parseur.parse(con.getInputStream());
-				
 				if(doc.getElementsByTagName("web:Total").getLength() == 0)
 				{
 					_totalHits = new Long(0);

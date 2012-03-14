@@ -26,5 +26,15 @@ public class WgetWebPageDownloader extends AbstractExternalWebPageDownloader
     	brP.close();
     	process.destroy();
 	}
-
+	
+//	public static void main(String[] args) {
+//		WgetWebPageDownloader w = new WgetWebPageDownloader("/usr/bin/wget");
+//		try {
+//			w.download("/tmp/tata3", "http://epress.anu.edu.au/third_princess/mobile_devices/ch04.html");
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

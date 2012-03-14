@@ -1,4 +1,4 @@
-package namedentity;
+package namedentity.ner;
 
 import java.io.BufferedReader;
 import java.io.File;

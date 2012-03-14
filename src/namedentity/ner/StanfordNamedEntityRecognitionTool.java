@@ -1,4 +1,4 @@
-package namedentity;
+package namedentity.ner;
 
 import util.GetProperties;
 import edu.stanford.nlp.ie.crf.CRFClassifier;

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import util.GetProperties;
+import util.Log;
 import web.page.downloader.AbstractExternalWebPageDownloader;
 import web.page.downloader.ExternalWebPageDownloaderFactory;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
@@ -34,20 +35,20 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 	{
 		try
 		{
-			if(!(url.endsWith(".pdf") || url.endsWith(".rdf") || url.endsWith(".doc") || url.endsWith(".ppt")))
+			if(url.endsWith(".pdf") || url.endsWith(".rdf") || url.endsWith(".doc") || url.endsWith(".ppt"))
 				return false;
-			
 			AbstractExternalWebPageDownloader webPagesDownloader = ExternalWebPageDownloaderFactory.get(GetProperties.getInstance().getProperty("externalWebPagesDownloaderPath"));
 			webPagesDownloader.download(_directory+"/"+_fileNumber,url);
 
 			_webPages.put(url, new File(_directory+"/"+_fileNumber));
 			_fileNumber++;
 		} catch (InterruptedException e) {
+			Log.getInstance().add(e);
 			return false;
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			return false;
 		}
-
 		return true;
 	}
 	
@@ -67,6 +68,7 @@ public class WebPagesCorpus extends AbstractWebPagesCorpus
 				System.out.println(error);
 			
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
