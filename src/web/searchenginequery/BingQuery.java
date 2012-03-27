@@ -14,6 +14,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import util.Log;
+
 public class BingQuery extends AbstractWebSearchEngineQuery 
 {
 	private String _market;
@@ -42,7 +44,7 @@ public class BingQuery extends AbstractWebSearchEngineQuery
 		{
 			query = URLEncoder.encode(query,"UTF-8"); //Transforme la requête en chaîne valide pour insérer dans une url
 		}catch(Exception e){
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 
@@ -120,17 +122,17 @@ public class BingQuery extends AbstractWebSearchEngineQuery
 						_snippets.remove(_snippets.size()-1);
 				}
 			}catch(ParserConfigurationException pce){
-				System.err.println(pce.getMessage());
+				Log.getInstance().add(pce);
 				pce.printStackTrace();
 				System.err.println("Erreur de configuration du parseur DOM");
 				System.err.println("lors de l'appel à fabrique.newDocumentBuilder();");
 			}catch(SAXException se){
-				System.err.println(se.getMessage());
+				Log.getInstance().add(se);
 				se.printStackTrace();
 				System.err.println("Erreur lors du parsing du document");
 				System.err.println("lors de l'appel à construteur.parse(xml)");
 			}catch(IOException ioe){
-				System.err.println(ioe.getMessage());
+				Log.getInstance().add(ioe);
 				ioe.printStackTrace();
 				System.err.println("Erreur d'entrée/sortie");
 				System.err.println("lors de l'appel à construteur.parse(xml)");

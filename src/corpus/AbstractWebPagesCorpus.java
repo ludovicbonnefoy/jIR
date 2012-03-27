@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import util.Log;
+
 /**
  * Classe abstraite implémentant la quasi-totalité des méthodes de l'interface correspondante.
  * La seule méthode non implémentée est la seule qui est particulière à la manière de récupérer
@@ -86,9 +88,12 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			Log.getInstance().add(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			Log.getInstance().add(e);
 		} catch (ClassNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -212,7 +217,7 @@ public abstract class AbstractWebPagesCorpus implements WebPagesCorpusInterface,
 			oos.close();
 		}
 		catch (java.io.IOException e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

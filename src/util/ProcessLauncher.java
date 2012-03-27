@@ -206,22 +206,27 @@ public class ProcessLauncher {
 				try {
 					status = process.exitValue();
 				} catch (IllegalThreadStateException itse) {
+					Log.getInstance().add(itse);
+					itse.printStackTrace();
 					process.destroy();
 					status = process.exitValue();
 				}
 			} catch (InterruptedException ie) {
+				Log.getInstance().add(ie);
 				ie.printStackTrace();
 			}
 		} else if (timeout == 0L) {
 			try {
 				status = process.waitFor();
 			} catch (InterruptedException ie) {
+				Log.getInstance().add(ie);
 				ie.printStackTrace();
 			}
 		}
 		finished = true;
         }catch(IOException ieo){
-            
+			Log.getInstance().add(ieo);
+			ieo.printStackTrace();
         }
 
 		return status;
@@ -249,6 +254,7 @@ public class ProcessLauncher {
 						}
 					}
 				} catch(IOException ioe) {
+					Log.getInstance().add(ioe);
 					ioe.printStackTrace();
 				}
 			}
@@ -261,7 +267,8 @@ public class ProcessLauncher {
                 try {
                     process.waitFor();
                 } catch(InterruptedException ie) {
-                    ie.printStackTrace();
+        			Log.getInstance().add(ie);
+        			ie.printStackTrace();
                 }
             }
         };

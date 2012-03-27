@@ -25,6 +25,7 @@ package weka;
 import java.io.Serializable;
 import java.util.Random;
 
+import util.Log;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.clusterers.Clusterer;
@@ -151,7 +152,9 @@ public class WekaLearner implements Serializable {
                 try {
                     inst.setValue((Attribute)m_WekaAttributes.elementAt(i), (String)pi_Instance[i]);
                 } catch (Exception e) {
-                    inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
+        			Log.getInstance().add(e);
+        			e.printStackTrace();
+                	inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
                 }
                 
             }
@@ -182,7 +185,9 @@ public class WekaLearner implements Serializable {
 		        try {
 		            inst.setValue((Attribute)m_WekaAttributes.elementAt(i), (String)pi_Instance[i]);
 		        } catch (Exception e) {
-		            inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
+					Log.getInstance().add(e);
+					e.printStackTrace();
+					inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
 		        }
 		        
 		    }
@@ -201,7 +206,7 @@ public class WekaLearner implements Serializable {
 			m_Scheme = pi_Classifier;
 			m_Scheme.buildClassifier(m_TrainingSet);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -216,7 +221,7 @@ public class WekaLearner implements Serializable {
 			m_ClusterScheme = pi_Clusterer;
 			m_ClusterScheme.buildClusterer(m_TrainingSet);			
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -232,7 +237,7 @@ public class WekaLearner implements Serializable {
 			evaluation = new Evaluation(m_TrainingSet);
 			evaluation.crossValidateModel(m_Scheme, m_TrainingSet, 10, new Random());
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		// which error is the best? depends on the application.
@@ -251,7 +256,7 @@ public class WekaLearner implements Serializable {
 			evaluation = new Evaluation(m_TrainingSet);
 			evaluation.evaluateModel(m_Scheme, m_TestingSet);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		String strSummary = evaluation.toSummaryString();
@@ -290,7 +295,7 @@ public class WekaLearner implements Serializable {
 		try {
 			out = m_Scheme.classifyInstance(inst);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		return out;
@@ -311,7 +316,7 @@ public class WekaLearner implements Serializable {
 		try {
 			out = m_ClusterScheme.clusterInstance(inst);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		return out;
@@ -326,7 +331,9 @@ public class WekaLearner implements Serializable {
 		    	try {
 			    	inst.setValue((Attribute)m_WekaAttributes.elementAt(i), (String)pi_Instance[i]);
 		    	} catch (Exception e) {
-		    		inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
+					Log.getInstance().add(e);
+					e.printStackTrace();
+					inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
 		    	}
 	        }
 		}
@@ -351,7 +358,9 @@ public class WekaLearner implements Serializable {
 				try {
 			    	inst.setValue((Attribute)m_WekaAttributes.elementAt(i), (String)pi_Instance[i]);      
 				} catch (Exception e) {
-		    		inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
+					Log.getInstance().add(e);
+					e.printStackTrace();
+					inst.setMissing((Attribute)m_WekaAttributes.elementAt(i));
 		    	}
 		    }		
 		}
@@ -360,7 +369,7 @@ public class WekaLearner implements Serializable {
 		try {
 		    fDistribution = m_Scheme.distributionForInstance(inst);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		return fDistribution;

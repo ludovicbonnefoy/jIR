@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 
 import util.FileReader;
 import util.GetProperties;
+import util.Log;
 import web.page.downloader.AbstractExternalWebPageDownloader;
 import web.page.downloader.ExternalWebPageDownloaderFactory;
 
@@ -56,8 +57,10 @@ public class WebPagesCorpusTrecForm extends AbstractWebPagesCorpus
 				_fileNumber ++;
 			}
 		} catch (InterruptedException e) {
+			Log.getInstance().add(e);
 			return false;
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			return false;
 		}
 		

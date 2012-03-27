@@ -16,6 +16,7 @@ import corpus.AbstractWebPagesCorpus;
 import searchengine.indri.Indri;
 import searchengine.indri.PassageIndri;
 import util.GetProperties;
+import util.Log;
 import web.util.html.HTML2Text;
 
 /**
@@ -69,7 +70,7 @@ public class GetPassages
         		list.add(new PassageIndri(scoreDocuments.get(documentId),documentId,line)); //on créé un passage que l'on rajoute à la liste
         	}
     	}catch(Exception e){
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
     	
@@ -103,14 +104,20 @@ public class GetPassages
                 	pw.println("<docno> "+docno+"  </docno>"); //écriture du nom du document
                 
                 	pw.println(text); //écriture de son contenu
-                }catch (Exception e) {}
-                catch (StackOverflowError sofe) {}
+                }catch (Exception e) {
+        			Log.getInstance().add(e);
+        			e.printStackTrace();
+                }
+                catch (StackOverflowError sofe) {
+                	sofe.printStackTrace();
+                }
             }
             pw.close();
             
             passagesSegmentation(new File(GetProperties.getInstance().getProperty("tmpDirectory")+"/corpus"), nbrLine); //segmentation du corpus
         }catch(Exception e){
-            System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
         }
     }
     
@@ -221,7 +228,7 @@ public class GetPassages
     		process.destroy();
     		brTokens.close();
     	}catch(Exception e){
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
     	}
     }

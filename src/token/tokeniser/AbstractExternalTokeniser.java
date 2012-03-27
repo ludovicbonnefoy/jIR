@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import util.Log;
+
 /**
  * Classe abstraite implémentant la création d'un tokeniseur et une ou deux méthodes communes.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
@@ -39,8 +41,10 @@ public abstract class AbstractExternalTokeniser implements TokeniserInterface
 			pwPassages.flush();
 			pwPassages.close();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		

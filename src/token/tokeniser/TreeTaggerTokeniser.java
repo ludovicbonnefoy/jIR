@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import util.Log;
+
 /**
  * Utilisation du TreeTagger pour tokeniser des textes.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
@@ -54,10 +56,13 @@ public class TreeTaggerTokeniser extends AbstractExternalTokeniser
 			brTokens.close();
 			process.destroy();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		

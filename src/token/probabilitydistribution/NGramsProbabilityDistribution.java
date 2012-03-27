@@ -18,6 +18,7 @@ import java.util.zip.GZIPInputStream;
 
 import token.Token;
 import util.GetProperties;
+import util.Log;
 import util.TreeTagger;
 import web.util.html.HTML2Text;
 
@@ -68,10 +69,13 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 			_n = tmp.getN();
 			ois.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -179,7 +183,8 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 			pw.close();
 
 		}catch(Exception e){
-			System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromString"), n);
@@ -210,8 +215,13 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 						String text = parser.getCleanText(); //on a ici le texte du document web, sans les balises
 
 						pw.print(text); //écriture dans le fichier
-					}catch (Exception e) {}
-					catch (StackOverflowError sofe) {}
+					}catch (Exception e) {
+						Log.getInstance().add(e);
+						e.printStackTrace();
+					}
+					catch (StackOverflowError sofe) {
+						sofe.printStackTrace();
+					}
 
 					pw.flush();
 				}
@@ -219,7 +229,8 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 				pw.close(); //fermeture du flux vers le fichier
 			}
 		}catch(Exception e){
-			System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromCorpus"), n);
@@ -246,15 +257,21 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 					String text = parser.getCleanText(); //on a ici le texte du document web, sans les balises
 
 					pw.print(text); //écriture dans le fichier
-				}catch (Exception e) {}
-				catch (StackOverflowError sofe) {}
+				}catch (Exception e) {
+					Log.getInstance().add(e);
+					e.printStackTrace();
+				}
+				catch (StackOverflowError sofe) {
+					sofe.printStackTrace();
+				}
 
 				pw.flush();
 			}
 
 			pw.close(); //fermeture du flux vers le fichier
 		}catch(Exception e){
-			System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromCorpus"), n);
@@ -287,7 +304,8 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 				pw.close(); //fermeture du flux vers le fichier
 			}
 		}catch(Exception e){
-			System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromWebCorpus"), n);
@@ -315,7 +333,8 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 
 			pw.close(); //fermeture du flux vers le fichier
 		}catch(Exception e){
-			System.err.println(e);
+			Log.getInstance().add(e);
+			e.printStackTrace();
 		}
 
 		fromFile(new File("/tmp/NgramsFromCorpus"), n);
@@ -351,8 +370,13 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 					try{
 						parser.parse(new StringReader(webPage)); //suppression des balises html
 						pw.println(parser.getCleanText()); //écriture du texte dans un fichier
-					}catch (Exception e) {}
-					catch (StackOverflowError sofe) {}
+					}catch (Exception e) {
+						Log.getInstance().add(e);
+						e.printStackTrace();
+					}
+					catch (StackOverflowError sofe) {
+						sofe.printStackTrace();
+					}
 
 					webPage = new String();
 				}
@@ -374,7 +398,7 @@ public class NGramsProbabilityDistribution extends AbstractFreqsProbabilityDistr
 			br.close();
 
 		}catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 

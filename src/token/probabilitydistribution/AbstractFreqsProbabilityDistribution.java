@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import util.Log;
+
 public abstract class AbstractFreqsProbabilityDistribution implements Serializable, FreqsProbabilityDistribution
 {
 	private static final long serialVersionUID = 3365020124806085622L;
@@ -60,10 +62,13 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 			_total = tmp.getVocabularySize();
 			ois.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -223,8 +228,10 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

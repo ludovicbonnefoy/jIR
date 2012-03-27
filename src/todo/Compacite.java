@@ -7,6 +7,7 @@ import namedentity.AbstractNamedEntityRecognitionTool;
 import namedentity.NamedEntityRecognitionToolFactory;
 
 import util.GetProperties;
+import util.Log;
 import util.TreeTagger;
 
 
@@ -234,7 +235,8 @@ public class Compacite
 //            }
 //            return scoreEN;
 //        }catch(Exception e){
-//            System.err.println(e.getMessage());
+	//	Log.getInstance().add(e);
+	//	e.printStackTrace();
 //        }
 //        return null;
 //    }

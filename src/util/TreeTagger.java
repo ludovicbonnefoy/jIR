@@ -33,8 +33,10 @@ public class TreeTagger
 			pwPassages.flush();
 			pwPassages.close();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		
@@ -74,10 +76,13 @@ public class TreeTagger
 			brTokens.close();
 			process.destroy();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 		

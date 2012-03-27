@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import util.GetProperties;
+import util.Log;
 
 /**
  * Permet d'interroger le moteur de recherche Google.
@@ -97,6 +98,7 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 						else
 							tmpSnippet.add(tokenLine);
 					}catch(PatternSyntaxException pse){
+						Log.getInstance().add(pse);
 						pse.printStackTrace();
 					}
 				}
@@ -115,10 +117,13 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 			brTokens.close();
 			process.destroy();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -137,7 +142,8 @@ public class GoogleQuery extends AbstractWebSearchEngineQuery
 	//		try {
 	//			query = URLEncoder.encode(query, "UTF-8");
 	//		} catch (UnsupportedEncodingException e) {
-	//			e.printStackTrace();
+	//						Log.getInstance().add(e);
+//	e.printStackTrace();
 	//		}
 	//
 	//		_urls = new ArrayList<String>(0);

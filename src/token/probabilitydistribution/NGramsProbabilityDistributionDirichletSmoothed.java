@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 
 import token.probabilitydistribution.smoother.Dirichlet;
+import util.Log;
 
 
 /**
@@ -82,10 +83,13 @@ public class NGramsProbabilityDistributionDirichletSmoothed extends NGramsProbab
 			
 			ois.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

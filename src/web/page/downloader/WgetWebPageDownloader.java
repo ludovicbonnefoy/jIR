@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import util.Log;
+
 /**
  * Permet de récupérer des pages web en utilisant l'outil wget.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
@@ -32,9 +34,11 @@ public class WgetWebPageDownloader extends AbstractExternalWebPageDownloader
 //		try {
 //			w.download("/tmp/tata3", "http://epress.anu.edu.au/third_princess/mobile_devices/ch04.html");
 //		} catch (InterruptedException e) {
-//			e.printStackTrace();
+//				Log.getInstance().add(e);
+//	e.printStackTrace();
 //		} catch (IOException e) {
-//			e.printStackTrace();
+//			Log.getInstance().add(e);
+//				e.printStackTrace();
 //		}
 //	}
 }

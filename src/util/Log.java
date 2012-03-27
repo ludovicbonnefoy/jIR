@@ -14,6 +14,7 @@ public final class Log
 		{
 			_logWriter = new PrintWriter(GetProperties.getInstance().getProperty("logFile"));
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import util.GetProperties;
+import util.Log;
 import weka.WekaAttribute;
 import weka.WekaLearner;
 import weka.classifiers.Evaluation;
@@ -430,7 +431,7 @@ public class WebPagesGenreClassification implements java.io.Serializable
         	Runtime.getRuntime().exec(new String[]{GetProperties.getInstance().getProperty("wget"),"-O",GetProperties.getInstance().getProperty("tmpDirectory")+"/page","-T","5","-t","2",url}).waitFor(); //récupération de la page web
         	return process(new File(GetProperties.getInstance().getProperty("tmpDirectory") + "/page")); //process
         }catch(Exception e){
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
         }
         
@@ -544,7 +545,7 @@ public class WebPagesGenreClassification implements java.io.Serializable
 	    		oos.close();
 	    	}
 	    	catch (java.io.IOException e) {
-				System.err.println(e.getMessage());
+				Log.getInstance().add(e);
 				e.printStackTrace();
 	    	}
 		}
@@ -557,7 +558,7 @@ public class WebPagesGenreClassification implements java.io.Serializable
 	    		
 	    		wpgc = (WebPagesGenreClassification)(ois.readObject());
 	    	}catch(Exception e){
-				System.err.println(e.getMessage());
+				Log.getInstance().add(e);
 				e.printStackTrace();
 	    	}
 		}
@@ -569,7 +570,7 @@ public class WebPagesGenreClassification implements java.io.Serializable
 			pw.println(wpgc.getTrainingSet());
 			pw.close();
 		}catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}*/
     	

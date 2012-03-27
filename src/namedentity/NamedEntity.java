@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import token.tokeniser.AbstractExternalTokeniser;
 import token.tokeniser.ExternalTokeniserFactory;
 import util.GetProperties;
+import util.Log;
 import util.SortKeysMapByNumberValues;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
 import web.searchenginequery.WebSearchEngineQueryFactory;
@@ -139,7 +140,7 @@ public class NamedEntity implements Serializable
 				_canonicalForm = ((String)sortedNamedEntities.get(0)).trim();
 	        }
 		}catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	        
@@ -172,12 +173,15 @@ public class NamedEntity implements Serializable
 				_namedEntity = suggestionList.item(0).getTextContent();
 			}
 		}catch(ParserConfigurationException pce){
+			Log.getInstance().add(pce);
 			System.err.println("Erreur de configuration du parseur DOM");
 			System.err.println("lors de l'appel à fabrique.newDocumentBuilder();");
 		}catch(SAXException se){
+			Log.getInstance().add(se);
 			System.err.println("Erreur lors du parsing du document");
 			System.err.println("lors de l'appel à construteur.parse(xml)");
 		}catch(IOException ioe){
+			Log.getInstance().add(ioe);
 			System.err.println("Erreur d'entrée/sortie");
 			System.err.println("lors de l'appel à construteur.parse(xml)");
 		}

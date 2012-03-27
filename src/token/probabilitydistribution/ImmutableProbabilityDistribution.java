@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
+import util.Log;
+
 public class ImmutableProbabilityDistribution implements Serializable, ProbabilityDistribution 
 {
 	private static final long serialVersionUID = -4128111925579928824L;
@@ -49,10 +51,13 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 			_probas = tmp.getProbabilityMap();
 			ois.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}
@@ -136,8 +141,10 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

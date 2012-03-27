@@ -12,6 +12,8 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
+import util.Log;
+
 /**
  * Supprime les balises HTML d'un texte.
  * Les balises du type "p" sont remplacées par un retour à la ligne, les autres par rien.
@@ -129,10 +131,10 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
             out.close();
         }
         catch (StackOverflowError e) {
-        	System.out.println("tttt");
+        	e.printStackTrace();
         }
         catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
     }

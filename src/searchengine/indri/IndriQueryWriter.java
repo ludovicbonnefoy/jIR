@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import util.Log;
+
 public class IndriQueryWriter 
 {
 	/** La mémoire maximum qu'Indri va pouvoir utiliser pour effectuer ses tâches */
@@ -101,8 +103,10 @@ public class IndriQueryWriter
 			parameters.println("</parameters>");
 			parameters.close();
 		} catch (UnsupportedEncodingException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 	}

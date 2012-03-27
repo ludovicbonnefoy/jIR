@@ -104,10 +104,13 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 				}
 
 			} catch (UnsupportedEncodingException e) {
+				Log.getInstance().add(e);
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
+				Log.getInstance().add(e);
 				e.printStackTrace();
 			} catch (IOException e) {
+				Log.getInstance().add(e);
 				e.printStackTrace();
 			}
 		}
@@ -340,8 +343,10 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 			}
 
 		} catch (IOException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			Log.getInstance().add(e);
 			e.printStackTrace();
 		}
 

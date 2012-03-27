@@ -17,6 +17,7 @@ import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Node;
 
 import util.GetProperties;
+import util.Log;
 import web.util.html.HTML2Text;
 
 /**
@@ -129,7 +130,7 @@ public class ProcessFeatures
                 analyseLinks(webSite,domain); //calcul de features sur les URLs sortantes
             
         }catch(Exception e){
-			System.err.println(e.getMessage());
+			Log.getInstance().add(e);
 			e.printStackTrace();
         }
     }
@@ -240,8 +241,13 @@ public class ProcessFeatures
 
             process.waitFor();
             process.destroy();
-        }catch(Exception e){}
-        catch (StackOverflowError sofe) {}
+        }catch(Exception e){
+			Log.getInstance().add(e);
+			e.printStackTrace();
+        }
+        catch (StackOverflowError sofe) {
+        	sofe.printStackTrace();
+        }
 }
 
 /**
@@ -259,7 +265,7 @@ private void processHTMLFeatures(String filename)
         
         exploreDomTree(rootElement); //exploration de l'arbre dom et récupération des features
     }catch (Exception e){
-		System.err.println(e.getMessage());
+		Log.getInstance().add(e);
 		e.printStackTrace();
     }
 }
