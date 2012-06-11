@@ -186,4 +186,9 @@ public class IndriQueryWriter
 	{
 		_nbrThreads = nbrThreads;
 	}
+	
+	public void setCount(Integer count)
+	{
+		_count = count;
+	}
 }
