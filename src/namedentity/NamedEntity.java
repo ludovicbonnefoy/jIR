@@ -24,6 +24,7 @@ import token.tokeniser.AbstractExternalTokeniser;
 import token.tokeniser.ExternalTokeniserFactory;
 import util.GetProperties;
 import util.Log;
+import util.Maps;
 import util.SortKeysMapByNumberValues;
 import web.searchenginequery.AbstractWebSearchEngineQuery;
 import web.searchenginequery.WebSearchEngineQueryFactory;
@@ -125,10 +126,7 @@ public class NamedEntity implements Serializable
 	                formNamedEntity = formNamedEntity.trim();
 	                
 	                if(formNamedEntity.contains(_namedEntity))
-	                {
-	                	Integer count = forms.containsKey(formNamedEntity) ? forms.get(formNamedEntity) : 0;
-	                	forms.put(formNamedEntity, count+1);
-	                }
+	                	forms.put(formNamedEntity, Maps.getInt(forms, formNamedEntity) + 1);
 	            }
 	            else if(!token.equals(".")) //si on a un point on passe
 	            	formNamedEntity += token+" ";

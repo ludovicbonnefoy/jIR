@@ -16,6 +16,7 @@ import java.util.HashMap;
 import token.Token;
 import util.GetProperties;
 import util.Log;
+import util.Maps;
 import util.TreeTagger;
 
 /**
@@ -93,14 +94,10 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 					Long occ = new Long(line.substring(line.lastIndexOf("\t")+1));
 
 					if(tokens[0].equals("<S>"))
-					{
-						Long tmp = (occurrenceBeginningSentence.containsKey(tokens[1]) ? occurrenceBeginningSentence.get(tokens[1]) : 0) + occ;
-						occurrenceBeginningSentence.put(tokens[1], tmp);
-					}
+						occurrenceBeginningSentence.put(tokens[1], Maps.getLong(occurrenceBeginningSentence, tokens[1]) + occ);
 
 					//compte du nombre d'occurrence total
-					Long tmp = (occurrenceTot.containsKey(tokens[1]) ? occurrenceTot.get(tokens[1]) : 0) + occ;
-					occurrenceTot.put(tokens[1], tmp);
+					occurrenceTot.put(tokens[1], Maps.getLong(occurrenceBeginningSentence, tokens[1]) + occ);
 				}
 
 			} catch (UnsupportedEncodingException e) {
@@ -116,11 +113,7 @@ public class LEXp extends AbstractNamedEntityRecognitionTool
 		}
 
 		for(String token : occurrenceTot.keySet())
-		{
-			Double atSentenceBeginning = Math.max(new Double( occurrenceBeginningSentence.containsKey(token) ? occurrenceBeginningSentence.get(token) : 0 ), 1.); //le 1 = lissage de Laplace
-
-			_ratioBeginOther.put(token, atSentenceBeginning / occurrenceTot.get(token));
-		}
+			_ratioBeginOther.put(token, Math.max(new Double(Maps.getLong(occurrenceBeginningSentence, token)), 1.) / occurrenceTot.get(token)); //le 1 = lissage de Laplace
 	}
 
 	//problème avec l'espace devant inter mis lorsqu'il est vide

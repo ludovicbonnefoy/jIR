@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import util.Log;
+import util.Maps;
 
 public abstract class AbstractFreqsProbabilityDistribution implements Serializable, FreqsProbabilityDistribution
 {
@@ -93,8 +94,7 @@ public abstract class AbstractFreqsProbabilityDistribution implements Serializab
 	 */
 	public void add(String term, Long occ)
 	{
-		Long count = _freqs.containsKey(term) ? _freqs.get(term) : 0; //on récupère le compte précédent de ce n-gramme
-		_freqs.put(term, count + occ);
+		_freqs.put(term, Maps.getLong(_freqs, term) + occ);
 		_total += occ;
 	}
 

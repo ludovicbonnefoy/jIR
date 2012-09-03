@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import util.Log;
+import util.Maps;
 
 public class ImmutableProbabilityDistribution implements Serializable, ProbabilityDistribution 
 {
@@ -75,8 +76,7 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 	 */
 	public void add(String term, Double occ)
 	{
-		Double count = _probas.containsKey(term) ? _probas.get(term) : 0.; //on récupère le compte précédent de ce n-gramme
-		_probas.put(term, count + occ);
+		_probas.put(term, Maps.getDouble(_probas, term) + occ);
 	}
 
 	/**

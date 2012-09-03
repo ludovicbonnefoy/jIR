@@ -3,6 +3,7 @@ package namedentity;
 import java.util.HashMap;
 import java.util.List;
 
+import util.Maps;
 import util.SortKeysMapByNumberValues;
 
 public class DisambiguatedNamedEntity extends NamedEntity 
@@ -32,8 +33,7 @@ public class DisambiguatedNamedEntity extends NamedEntity
 	
 	public void addNameVariant(String nameVariant, Double confidence)
 	{
-		Double conf = _nameVariants.containsKey(nameVariant) ? _nameVariants.get(nameVariant) : 0.;
-		_nameVariants.put(nameVariant, conf+confidence);
+		_nameVariants.put(nameVariant, Maps.getDouble(_nameVariants, nameVariant) +confidence);
 	}
 	
 	public void removeNameVariant(String nameVariant)

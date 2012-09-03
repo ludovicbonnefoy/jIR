@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 
 import util.GetProperties;
 import util.Log;
+import util.Maps;
 import web.util.html.HTML2Text;
 
 /**
@@ -115,10 +116,7 @@ public class ProcessFeatures
 
             String[] urlTokens = url.split("[^a-zA-z0-9]"); //découpage de l'url en tokens
             for(String token : urlTokens) //pour chaque token
-            {
-            	Integer count = _urlWordsCount.containsKey(token) ? _urlWordsCount.get(token) : 0; //récupération du nombre de fois où a été rencontré l'élément.
-                _urlWordsCount.put(token, count + 1);
-            }
+                _urlWordsCount.put(token, Maps.getInt(_urlWordsCount, token) + 1);
         }
 
         try{
@@ -182,11 +180,9 @@ public class ProcessFeatures
 
                 wordLengthAverage += elements[2].length(); //taille moyenne des mots
 
-                Integer count = _wordsCount.containsKey(elements[2]) ? _wordsCount.get(elements[2]) : 0; //récupération du nombre de fois où a été rencontré l'élément.
-                _wordsCount.put(elements[2], count + 1);
+                _wordsCount.put(elements[2], Maps.getInt(_wordsCount, elements[2]) + 1);
 
-                count = _posCount.containsKey(elements[1]) ? _posCount.get(elements[1]) : 0; //récupération du nombre de fois où a été rencontré l'élément.
-                _posCount.put(elements[1], count + 1);
+                _posCount.put(elements[1], Maps.getInt(_posCount,elements[1]) + 1);
 
                 if(elements[1].equals("SENT")) //si on a un marqueur de fin de phrase
                 {
@@ -310,8 +306,7 @@ private void exploreDomTree (Node node)
     }*/
 
     
-    Integer count = _tagsCount.containsKey(node.getNodeName()) ? _tagsCount.get(node.getNodeName()) : 0; //récupération du nombre de fois où a été rencontré la balise.
-    _tagsCount.put(node.getNodeName(), count + 1);
+    _tagsCount.put(node.getNodeName(), Maps.getInt(_tagsCount, node.getNodeName()) + 1);
     
     if(node.getNodeName().equals("A") && node.getAttributes().getNamedItem("href") != null) //si on a un lien avec le champ "href" renseigné
         _aHREF.add(node.getAttributes().getNamedItem("href").getNodeValue()); //on ajoute dans la liste le lien sortant
