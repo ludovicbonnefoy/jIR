@@ -53,11 +53,11 @@ public class IndriQueryWriter
 	 */
 	public IndriQueryWriter()
 	{
-		_memory="3G";
+		_memory="10G";
 		_indexPaths = new ArrayList<String>(1);
 		_queries = new ArrayList<String>(1);
 		_retModel = "7";
-		_nbrThreads = 2;
+		_nbrThreads = 7;
 		_count = 100;
 		_smoothing = "method:dirichlet,mu:2500";
 		_trecFormat = "true";
@@ -190,5 +190,20 @@ public class IndriQueryWriter
 	public void setCount(Integer count)
 	{
 		_count = count;
+	}
+	
+	public void setPrintDocuments(boolean printDocument)
+	{
+		if(printDocument == true)
+			_printDocuments = "true";
+		else
+			_printDocuments = "false";
+	}
+	
+	public boolean getPrintDocuments()
+	{
+		if(_printDocuments == "true")
+			return true;
+		return false;
 	}
 }

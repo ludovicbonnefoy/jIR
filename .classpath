@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="lib/gson-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/google-ajax-apis.jar"/>
 	<classpathentry kind="lib" path="lib/stanford-ner/stanford-ner-2012-01-06.jar"/>
+	<classpathentry kind="lib" path="lib/reverb-core-1.4.1-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="lib/commons-exec-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

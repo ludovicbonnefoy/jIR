@@ -58,10 +58,11 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
      */
     public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos)
     {
-        if(t.breaksFlow() && !_breakflow) //gestion des retours à la ligne pour certains type de tags (p, ...)
+    	if(t.breaksFlow()) //gestion des retours à la ligne pour certains type de tags (p, ...)
+//        if(t.breaksFlow() && !_breakflow) //gestion des retours à la ligne pour certains type de tags (p, ...)
         {
-            _text.append(".\n");
-            _breakflow = true;
+            _text.append("\n");
+//            _breakflow = true;
         }
 
         if(t.equals(HTML.Tag.STYLE) || t.equals(HTML.Tag.HEAD) || t.equals(HTML.Tag.SCRIPT) || t.equals(HTML.Tag.SELECT))// || t.equals(HTML.Tag.TABLE)) //ne permet de signaler que l'on ne veut pas le texte de ces balises
@@ -85,7 +86,7 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
         if(interdiction <= 0) // Si on n'est pas dans une balise pour laquelle on ne veut pas conserver le texte
         {
             _text.append(" ").append(text); //ajout de la portion de texte à la suite de celui précédemment conservé.
-            _breakflow = false;
+//            _breakflow = false;
         }
     }
 
@@ -95,7 +96,7 @@ public class HTML2Text extends HTMLEditorKit.ParserCallback
      */
     public String getCleanText()
     {
-    	return HTMLEntities.decode(getText()).replaceAll("(<[^>]*>)|(script[^<>]*>)","").replaceAll("\n+","\n").trim();
+    	return HTMLEntities.decode(getText()).replaceAll("</br>","\n").replaceAll("(<[^>]*>)|(script[^<>]*>)","").replaceAll("\n+","\n").trim();
         //return HTMLEntities.decode(getText()).replaceAll("<[^>]*>","").replaceAll("\n+","\n");
 //        return HTMLEntities.decode(getText()).replaceAll("<","").replaceAll(">","").replaceAll("\n+","\n");
     }

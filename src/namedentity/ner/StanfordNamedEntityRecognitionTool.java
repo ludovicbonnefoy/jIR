@@ -19,6 +19,6 @@ public class StanfordNamedEntityRecognitionTool extends AbstractNamedEntityRecog
 		@SuppressWarnings("rawtypes")
 		CRFClassifier classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
 
-		return classifier.classifyWithInlineXML(text.replaceAll("[ ®©»«¬§¤¨¥ª´?]", " ")); //Classification du texte (privé de certains caractères).
+		return classifier.classifyWithInlineXML(text.replaceAll("[ ®©»«¬§¤¨¥ª´]", " ").replaceAll("?", ".")); //Classification du texte (privé de certains caractères).
 	}
 }

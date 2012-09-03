@@ -36,6 +36,12 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 	{
 		_probas = pd.getProbabilityMap();
 	}
+	
+	public ImmutableProbabilityDistribution(HashMap<String, Double> probas)
+	{
+		_probas = probas;
+		normalize();
+	}
 
 	/**
 	 * Récupération d'une distribution sérialisée.
@@ -102,6 +108,8 @@ public class ImmutableProbabilityDistribution implements Serializable, Probabili
 		Double total = 0.;
 		for(String token : _probas.keySet())
 			total += _probas.get(token);
+		
+		normalize(total);
 	}
 
 	@Override

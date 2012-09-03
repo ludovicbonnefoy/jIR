@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import util.Log;
-
 /**
  * Permet de récupérer des pages web en utilisant l'outil wget.
  * @author Ludovic Bonnefoy (ludovic.bonnefoy@gmail.com)
