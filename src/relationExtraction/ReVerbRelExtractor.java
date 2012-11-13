@@ -37,6 +37,8 @@ public class ReVerbRelExtractor
 	private ConfidenceFunction _confFunc;
 	private BinaryExtractionNormalizer _normalizer;
 
+	private static Object lock = new Object();
+
 	public ReVerbRelExtractor() throws ConfidenceFunctionException, IOException {
 		_extractor = new ReVerbExtractor();
 		_confFunc = new ReVerbOpenNlpConfFunction();
@@ -47,24 +49,26 @@ public class ReVerbRelExtractor
 	private ArrayList<NormalizedBinaryExtraction> extractFromSentReader(ChunkedSentenceReader reader)
 	{
 		ArrayList<NormalizedBinaryExtraction> extractions = new ArrayList<NormalizedBinaryExtraction>();
-		ChunkedSentenceIterator sentenceIt = reader.iterator();
+		synchronized(lock)
+		{
+			ChunkedSentenceIterator sentenceIt = reader.iterator();
+			try{
+				while (sentenceIt.hasNext()) 
+				{
+					// get the next chunked sentence
+					ChunkedSentence sent = sentenceIt.next();
+					Iterable<ChunkedBinaryExtraction> chunkedExtractions = _extractor.extract(sent);
 
-		try{
-			while (sentenceIt.hasNext()) 
-			{
-				// get the next chunked sentence
-				ChunkedSentence sent = sentenceIt.next();
-				Iterable<ChunkedBinaryExtraction> chunkedExtractions = _extractor.extract(sent);
-
-				for (ChunkedBinaryExtraction extr : chunkedExtractions) {
-					// run the confidence function
-					double conf = getConf(extr);
-					extractions.add(_normalizer.normalize(extr, conf));
+					for (ChunkedBinaryExtraction extr : chunkedExtractions) {
+						// run the confidence function
+						double conf = getConf(extr);
+						extractions.add(_normalizer.normalize(extr, conf));
+					}
 				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.getInstance().add(new Exception(Thread.currentThread().getName()+" "+e.getMessage()));
 			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			Log.getInstance().add(new Exception(Thread.currentThread().getName()+" "+e.getMessage()));
 		}
 
 		return extractions;
